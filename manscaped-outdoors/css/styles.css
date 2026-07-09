@@ -766,6 +766,90 @@ select:focus-visible, textarea:focus-visible {
   border-radius: 12px; background: var(--olive); color: var(--cream); font-size: 1.3rem;
 }
 
+/* ---- Before / After slider ---- */
+.beforeafter { background: var(--bg); }
+.ba {
+  --pos: 50%;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  max-width: 560px;
+  margin: 0 auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  user-select: none;
+  touch-action: none;
+}
+.ba__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+/* the "before" image is clipped to reveal only the left portion */
+.ba__before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.ba__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  width: 3px;
+  transform: translateX(-50%);
+  background: var(--cream);
+  box-shadow: 0 0 0 1px rgba(28, 24, 19, 0.25);
+  pointer-events: none;
+}
+.ba__grip {
+  position: absolute;
+  top: 50%;
+  left: var(--pos);
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: var(--shadow-md);
+  display: grid;
+  place-items: center;
+  color: var(--bark);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+.ba__tag {
+  position: absolute;
+  top: 1rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(28, 24, 19, 0.72);
+  color: var(--cream);
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease);
+}
+.ba__tag--before { left: 1rem; }
+.ba__tag--after { right: 1rem; }
+/* full-area invisible range = accessible + drag anywhere */
+.ba__range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.ba__range::-webkit-slider-thumb { -webkit-appearance: none; width: 46px; height: 100%; cursor: ew-resize; }
+.ba__range::-moz-range-thumb { width: 46px; height: 100%; border: 0; background: transparent; cursor: ew-resize; }
+.ba__range:focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; }
+
 /* ---- Testimonials / reviews ---- */
 .testimonials { background: var(--olive-2); color: var(--cream); }
 .testimonials .section__head { max-width: 800px; margin-inline: auto; text-align: center; }

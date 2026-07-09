@@ -148,6 +148,24 @@
     }
   });
 
+  /* ---------- Before / After slider ---------- */
+  document.querySelectorAll("[data-ba]").forEach(function (ba) {
+    var range = ba.querySelector(".ba__range");
+    if (!range) return;
+    var beforeTag = ba.querySelector(".ba__tag--before");
+    var afterTag = ba.querySelector(".ba__tag--after");
+    function update() {
+      var v = +range.value;
+      ba.style.setProperty("--pos", v + "%");
+      // Only show a label when its image is actually visible.
+      // pos=100 => before fills the frame; pos=0 => after fills the frame.
+      if (beforeTag) beforeTag.style.opacity = v < 8 ? "0" : "1";
+      if (afterTag) afterTag.style.opacity = v > 92 ? "0" : "1";
+    }
+    range.addEventListener("input", update);
+    update();
+  });
+
   /* ---------- Contact form (mailto fallback) ----------
      Works with no backend on GitHub Pages. Future: point this
      at Resend / a Formspree endpoint and drop the mailto build. */

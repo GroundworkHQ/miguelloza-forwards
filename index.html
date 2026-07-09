@@ -1,10 +1,231 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Miguel Loza</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manscaped Outdoors | Landscape Design &amp; Hardscapes in Clarkesville, GA</title>
+  <meta name="description" content="Manscaped Outdoors crafts outdoor experiences across Clarkesville and Northeast Georgia. Landscape design, hardscapes, patios, retaining walls, fire pits, and natural rock features." />
+
+  <!-- Open Graph / social -->
+  <meta property="og:title" content="Manscaped Outdoors" />
+  <meta property="og:description" content="We craft outdoor experiences. Landscape design, hardscapes, and rock features in Northeast Georgia." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/hero/hero-eydmdd9-poster.jpg" />
+
+  <link rel="icon" type="image/png" href="assets/manscaped-outdoors-logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <p>miguelloza.com</p>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="siteHeader" data-header>
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Manscaped Outdoors home">
+        <img class="brand__mark" src="assets/manscaped-outdoors-logo.png" alt="" width="48" height="48" />
+        <span class="brand__name">Manscaped <span>Outdoors</span></span>
+      </a>
+
+      <nav class="nav" id="primaryNav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-header__cta">
+        <a class="btn btn--phone" href="tel:+14698416524">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+          <span>(469) 841-6524</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-label="Introduction">
+      <img
+        class="hero__video"
+        src="assets/hero/hero-still.jpg"
+        alt="Aerial view of a flagstone fire-pit patio with seating, built by Manscaped Outdoors" />
+      <div class="hero__overlay"></div>
+
+      <div class="container hero__content">
+        <p class="hero__eyebrow">Clarkesville &amp; Northeast Georgia</p>
+        <h1 class="hero__title">We craft outdoor<br />experiences.</h1>
+        <p class="hero__lede">
+          Custom landscape design, hardscapes, and natural rock features
+          built to fit the land and last for generations.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="contact.html">Request an Estimate</a>
+          <a class="btn btn--ghost" href="#portfolio">See Our Work</a>
+        </div>
+      </div>
+
+      <a class="hero__scroll" href="#services" aria-label="Scroll to services">
+        <span></span>
+      </a>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="section services" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow">What we do</p>
+          <h2 class="section__title" id="services-title">Built by hand, made to endure</h2>
+          <p class="section__intro">
+            From the first sketch to the final stone, we handle every part of your
+            outdoor space so it comes together as one cohesive design.
+          </p>
+        </header>
+
+        <div class="services__grid">
+          <article class="service-card">
+            <div class="service-card__icon" aria-hidden="true">✦</div>
+            <h3>Landscape Design</h3>
+            <p>Thoughtful, site-specific plans that balance beauty, function, and how you actually live outdoors.</p>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" aria-hidden="true">▰</div>
+            <h3>Hardscapes</h3>
+            <p>Patios, walkways, retaining walls, and fire pits in natural stone and pavers, engineered to last.</p>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" aria-hidden="true">❖</div>
+            <h3>Rock Features</h3>
+            <p>Stone ponds, waterfalls, and dry creek beds that bring movement and texture to your landscape.</p>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card__icon" aria-hidden="true">✿</div>
+            <h3>Quarterly Installations</h3>
+            <p>Seasonal plantings and refreshes that keep your grounds looking their best all year round.</p>
+          </article>
+        </div>
+        <div style="margin-top: 2.5rem;">
+          <a class="btn btn--primary" href="services.html">Explore Our Services</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PORTFOLIO ============ -->
+    <section class="section portfolio" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow">Recent work</p>
+          <h2 class="section__title" id="portfolio-title">A look at what we've built</h2>
+          <p class="section__intro">
+            Real projects across Northeast Georgia. Tap any photo to view it larger.
+          </p>
+        </header>
+
+        <div class="portfolio__grid" data-lightbox-gallery>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5564.JPG"><img src="assets/portfolio/IMG_5564.JPG" alt="Completed landscaping project by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5565.JPG"><img src="assets/portfolio/IMG_5565.JPG" alt="Hardscape and landscape work by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5566.JPG"><img src="assets/portfolio/IMG_5566.JPG" alt="Outdoor living space built by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5567.JPG"><img src="assets/portfolio/IMG_5567.JPG" alt="Stone feature and planting by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5568.JPG"><img src="assets/portfolio/IMG_5568.JPG" alt="Landscape design project by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5569.JPG"><img src="assets/portfolio/IMG_5569.JPG" alt="Backyard transformation by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5571.JPG"><img src="assets/portfolio/IMG_5571.JPG" alt="Hardscape installation by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5572.JPG"><img src="assets/portfolio/IMG_5572.JPG" alt="Finished outdoor project by Manscaped Outdoors" loading="lazy" /></button>
+          <button class="portfolio__item" data-full="assets/portfolio/IMG_5573.JPG"><img src="assets/portfolio/IMG_5573.JPG" alt="Rock and landscape feature by Manscaped Outdoors" loading="lazy" /></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICE AREA ============ -->
+    <section class="section area" id="area" aria-labelledby="area-title">
+      <div class="container area__inner">
+        <div class="area__text">
+          <p class="section__eyebrow">Where we work</p>
+          <h2 class="section__title" id="area-title">Proudly serving Northeast Georgia</h2>
+          <p>
+            Based in Clarkesville, we design and build outdoor spaces throughout
+            Habersham County and the surrounding Northeast Georgia foothills.
+            If you're nearby and dreaming about your yard, let's talk.
+          </p>
+          <ul class="area__list">
+            <li>Clarkesville</li>
+            <li>Cornelia</li>
+            <li>Demorest</li>
+            <li>Clayton</li>
+            <li>Cleveland</li>
+            <li>Habersham County</li>
+          </ul>
+          <a class="btn btn--primary" href="contact.html">Start Your Project</a>
+        </div>
+        <div class="area__media">
+          <img src="assets/portfolio/IMG_5567.JPG" alt="Example of Manscaped Outdoors landscaping work in Northeast Georgia" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="cta-band" id="contact" aria-labelledby="cta-title">
+      <div class="container">
+        <h2 id="cta-title">Let's bring your vision to life</h2>
+        <p>
+          Tell us about your project and we'll set up a walkthrough. Free estimates
+          across Clarkesville and Northeast Georgia.
+        </p>
+        <div class="cta-band__actions">
+          <a class="btn btn--primary" href="contact.html">Request an Estimate</a>
+          <a class="btn btn--ghost" href="tel:+14698416524">Call (469) 841-6524</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <img src="assets/manscaped-outdoors-logo.png" alt="Manscaped Outdoors" width="56" height="56" />
+        <p>We craft outdoor experiences across Clarkesville and Northeast Georgia.</p>
+      </div>
+      <div class="site-footer__links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="site-footer__contact">
+        <a href="tel:+14698416524">(469) 841-6524</a>
+        <a href="mailto:info@manscapedoutdoors.com">info@manscapedoutdoors.com</a>
+        <a class="site-footer__social" href="https://www.facebook.com/manscapedlawncare" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+    <div class="container site-footer__legal">
+      <p>&copy; <span data-year></span> Manscaped Outdoors. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close image viewer">&times;</button>
+    <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+  </div>
+
+  <script src="js/main.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,4 @@
 {
-  "redirects": [
-    { "source": "/example", "destination": "https://example.com", "permanent": false }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }

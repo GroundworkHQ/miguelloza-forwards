@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Manscaped Outdoors — Request a Free Estimate</title>
+  <meta name="description" content="Let's bring your vision to life. Request a free landscaping or hardscape estimate in Clarkesville and Northeast Georgia." />
+  <link rel="icon" type="image/png" href="assets/manscaped-outdoors-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header is-scrolled" data-solid data-header>
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Manscaped Outdoors home">
+        <img class="brand__mark" src="assets/manscaped-outdoors-logo.png" alt="" width="48" height="48" />
+        <span class="brand__name">Manscaped <span>Outdoors</span></span>
+      </a>
+      <nav class="nav" id="primaryNav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="site-header__cta">
+        <a class="btn btn--phone" href="tel:+14698416524">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.24 1z"/></svg>
+          <span>(469) 841-6524</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-banner" style="background-image: url('assets/portfolio/IMG_5571.JPG');">
+      <div class="container">
+        <p class="page-banner__eyebrow">Get in touch</p>
+        <h1>Let's bring your vision to life</h1>
+        <p>
+          Tell us a little about your project and we'll reach out to set up a
+          walkthrough. Free estimates across Northeast Georgia.
+        </p>
+      </div>
+    </section>
+
+    <section class="section contact contact-page">
+      <div class="container contact-page__grid">
+        <div class="contact__intro">
+          <p class="section__eyebrow">Reach us directly</p>
+          <h2 class="section__title">We'd love to hear from you</h2>
+          <ul class="contact__details">
+            <li>
+              <span class="contact__label">Phone</span>
+              <a href="tel:+14698416524">(469) 841-6524</a>
+            </li>
+            <li>
+              <span class="contact__label">Email</span>
+              <a href="mailto:info@manscapedoutdoors.com">info@manscapedoutdoors.com</a>
+            </li>
+            <li>
+              <span class="contact__label">Service Area</span>
+              <span style="color: var(--cream);">Clarkesville, Lake Burton, Toccoa &amp; Northeast Georgia</span>
+            </li>
+          </ul>
+          <a class="btn btn--facebook" href="https://www.facebook.com/manscapedlawncare" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>
+            Follow us on Facebook
+          </a>
+          <div class="contact-note">
+            We spend our days out on job sites, so we may not pick up right away.
+            We do our best to respond the same day, sometimes later in the evening.
+            Thanks for your patience.
+          </div>
+        </div>
+
+        <!--
+          NOTE: mailto: fallback so the form works on GitHub Pages with no backend.
+          Future: wire to Resend (Miguel's stack) or Formspree by setting a real
+          action/URL and removing the JS mailto handler in js/main.js.
+        -->
+        <form class="contact__form" id="estimateForm" data-mailto="info@manscapedoutdoors.com" novalidate>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="firstName">First name</label>
+              <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
+            </div>
+            <div class="form-row">
+              <label for="lastName">Last name</label>
+              <input type="text" id="lastName" name="lastName" autocomplete="family-name" required />
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" required />
+            </div>
+            <div class="form-row">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="service">Project type</label>
+            <select id="service" name="service">
+              <option value="Landscape Design">Landscape Design</option>
+              <option value="Hardscapes">Hardscapes (patio, walkway, wall, fire pit)</option>
+              <option value="Rock Features">Rock Features (pond, waterfall, creek bed)</option>
+              <option value="Seasonal Installations">Seasonal Installations</option>
+              <option value="Something else">Something else</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="message">Tell us about your project</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block">Send Request</button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <img src="assets/manscaped-outdoors-logo.png" alt="Manscaped Outdoors" width="56" height="56" />
+        <p>We craft outdoor experiences across Clarkesville and Northeast Georgia.</p>
+      </div>
+      <div class="site-footer__links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="site-footer__contact">
+        <a href="tel:+14698416524">(469) 841-6524</a>
+        <a href="mailto:info@manscapedoutdoors.com">info@manscapedoutdoors.com</a>
+        <a class="site-footer__social" href="https://www.facebook.com/manscapedlawncare" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.49h-2.79v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+    <div class="container site-footer__legal">
+      <p>&copy; <span data-year></span> Manscaped Outdoors. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

@@ -47,33 +47,9 @@
     });
   }
 
-  /* ---------- Hero video: slow it down + respect reduced motion ----------
-     The clip is a rotating aerial orbit; at full speed the rotation (and the
-     boomerang direction change) is dizzying. Playing it slower reads as calm,
-     ambient motion. Tune HERO_SPEED (0.5 = half speed) to taste. */
-  var HERO_SPEED = 0.8;
-  var heroVideo = document.querySelector("[data-hero-video]");
-  if (heroVideo) {
-    if (prefersReducedMotion) {
-      // Show the poster frame only; don't autoplay motion.
-      try {
-        heroVideo.removeAttribute("autoplay");
-        heroVideo.pause();
-      } catch (e) {}
-    } else {
-      var applyHeroSpeed = function () {
-        try { heroVideo.playbackRate = HERO_SPEED; } catch (e) {}
-      };
-      applyHeroSpeed();
-      // playbackRate can reset if the element re-loads; reassert on key events.
-      heroVideo.addEventListener("loadedmetadata", applyHeroSpeed);
-      heroVideo.addEventListener("play", applyHeroSpeed);
-    }
-  }
-
   /* ---------- Reveal on scroll ---------- */
   var revealTargets = document.querySelectorAll(
-    ".section__head, .service-card, .portfolio__item, .area__media, .area__text, .contact__form, .contact__intro"
+    ".section__head, .intro__inner, .philosophy__inner, .service-card, .portfolio__item, .area__media, .area__text, .about-story__media, .about-story__body, .about-value, .testimonial, .contact__form, .contact__intro"
   );
   revealTargets.forEach(function (el, i) {
     el.setAttribute("data-reveal", "");
@@ -166,9 +142,28 @@
     update();
   });
 
+  /* ---------- Lead-source tracking ----------
+     Capture landing page, referrer, and UTM params into hidden fields so the
+     mailto body carries them today and a real backend can consume them later. */
+  (function captureLeadSource() {
+    var form = document.getElementById("estimateForm");
+    if (!form) return;
+    var params = new URLSearchParams(window.location.search);
+    function setHidden(id, val) {
+      var el = document.getElementById(id);
+      if (el) el.value = val || "";
+    }
+    setHidden("landingPage", window.location.href);
+    setHidden("referrer", document.referrer);
+    setHidden("utmSource", params.get("utm_source"));
+    setHidden("utmMedium", params.get("utm_medium"));
+    setHidden("utmCampaign", params.get("utm_campaign"));
+  })();
+
   /* ---------- Contact form (mailto fallback) ----------
-     Works with no backend on GitHub Pages. Future: point this
-     at Resend / a Formspree endpoint and drop the mailto build. */
+     Works with no backend on static hosting. Future: point this at Resend /
+     a Formspree endpoint and drop the mailto build. File uploads require the
+     real backend — mailto cannot attach files, so we only list filenames. */
   var form = document.getElementById("estimateForm");
   var note = document.getElementById("formNote");
   if (form) {
@@ -188,20 +183,54 @@
       var name =
         (fieldVal("firstName") + " " + fieldVal("lastName")).trim() ||
         fieldVal("name");
+
+      // Collect any attached file names (can't attach via mailto).
+      var mediaEl = form.elements["media"];
+      var fileNames = "";
+      if (mediaEl && mediaEl.files && mediaEl.files.length) {
+        var names = [];
+        for (var i = 0; i < mediaEl.files.length; i++) names.push(mediaEl.files[i].name);
+        fileNames = names.join(", ");
+      }
+
       var data = {
         name: name,
         email: fieldVal("email"),
         phone: fieldVal("phone"),
+        location: fieldVal("location"),
         service: fieldVal("service"),
+        budget: fieldVal("budget"),
+        timeline: fieldVal("timeline"),
         message: fieldVal("message"),
       };
-      var subject = "Estimate request — " + data.service + " (" + data.name + ")";
-      var body =
-        "Name: " + data.name + "\n" +
-        "Email: " + data.email + "\n" +
-        "Phone: " + (data.phone || "-") + "\n" +
-        "Project type: " + data.service + "\n\n" +
-        data.message + "\n";
+
+      var subject =
+        "New project inquiry: " + data.service + " (" + data.name + ")";
+      var lines = [
+        "Name: " + data.name,
+        "Email: " + data.email,
+        "Phone: " + (data.phone || "-"),
+        "Location / nearest community: " + (data.location || "-"),
+        "Project type: " + data.service,
+        "Approximate budget: " + (data.budget || "-"),
+        "Desired timeline: " + (data.timeline || "-"),
+        "",
+        "Project description:",
+        data.message,
+        "",
+        fileNames
+          ? "Photos/video selected (please attach when your email opens): " + fileNames
+          : "Photos/video: none attached",
+        "",
+        "--- Lead source ---",
+        "Landing page: " + (fieldVal("landingPage") || "-"),
+        "Referrer: " + (fieldVal("referrer") || "-"),
+        "UTM source: " + (fieldVal("utmSource") || "-"),
+        "UTM medium: " + (fieldVal("utmMedium") || "-"),
+        "UTM campaign: " + (fieldVal("utmCampaign") || "-"),
+      ];
+      var body = lines.join("\n") + "\n";
+
       var href =
         "mailto:" + to +
         "?subject=" + encodeURIComponent(subject) +
@@ -211,7 +240,9 @@
 
       if (note) {
         note.textContent =
-          "Opening your email app to send the request. If nothing happens, email us at " + to + ".";
+          "Thanks for reaching out. We're opening your email app to send the request. " +
+          "We'll review your details and follow up with the best next step. If nothing " +
+          "happens, email us at " + to + ".";
         note.className = "form-note is-success";
       }
     });

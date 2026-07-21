@@ -4,8 +4,8 @@
   <base href="/manscaped-outdoors/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact | Manscaped Outdoors — Request a Free Estimate</title>
-  <meta name="description" content="Let's bring your vision to life. Request a free landscaping or hardscape estimate in Clarkesville and Northeast Georgia." />
+  <title>Start Your Outdoor Project | Manscaped Outdoors Clarkesville GA</title>
+  <meta name="description" content="Tell us about your property. Whether you're planning a patio, retaining wall, drainage solution, deck, landscape installation, or full outdoor transformation, share a few details and we'll follow up with the best next step." />
   <link rel="icon" type="image/png" href="assets/manscaped-outdoors-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -44,11 +44,13 @@
   <main id="main">
     <section class="page-banner" style="background-image: url('assets/portfolio/IMG_5571.JPG');">
       <div class="container">
-        <p class="page-banner__eyebrow">Get in touch</p>
-        <h1>Let's bring your vision to life</h1>
+        <p class="page-banner__eyebrow">Start your project</p>
+        <h1>Tell us about your property</h1>
         <p>
-          Tell us a little about your project and we'll reach out to set up a
-          walkthrough. Free estimates across Northeast Georgia.
+          Whether you are planning a patio, retaining wall, drainage solution, deck,
+          landscape installation, or full outdoor transformation, the first step is
+          understanding the property and the goal. Send us a few details below, and we
+          will follow up with the best next step.
         </p>
       </div>
     </section>
@@ -69,7 +71,7 @@
             </li>
             <li>
               <span class="contact__label">Service Area</span>
-              <span style="color: var(--cream);">Clarkesville, Lake Burton, Toccoa &amp; Northeast Georgia</span>
+              <span style="color: var(--cream);">Northeast Georgia mountain &amp; lake communities, plus nearby Western North Carolina</span>
             </li>
           </ul>
           <a class="btn btn--facebook" href="https://www.facebook.com/manscapedlawncare" target="_blank" rel="noopener noreferrer">
@@ -84,46 +86,91 @@
         </div>
 
         <!--
-          NOTE: mailto: fallback so the form works on GitHub Pages with no backend.
+          NOTE: mailto: fallback so the form works on GitHub Pages / static hosting with
+          no backend. Hidden fields capture landing page + UTM for lead tracking; these
+          go into the email body today and map cleanly to a real backend later.
           Future: wire to Resend (Miguel's stack) or Formspree by setting a real
-          action/URL and removing the JS mailto handler in js/main.js.
+          action/URL and removing the JS mailto handler in js/main.js. File uploads
+          need the real backend — mailto cannot attach files.
         -->
         <form class="contact__form" id="estimateForm" data-mailto="info@manscapedoutdoors.com" novalidate>
           <div class="form-grid">
             <div class="form-row">
-              <label for="firstName">First name</label>
+              <label for="firstName">First name *</label>
               <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
             </div>
             <div class="form-row">
-              <label for="lastName">Last name</label>
+              <label for="lastName">Last name *</label>
               <input type="text" id="lastName" name="lastName" autocomplete="family-name" required />
             </div>
           </div>
           <div class="form-grid">
             <div class="form-row">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" autocomplete="email" required />
+              <label for="phone">Phone *</label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" required />
             </div>
             <div class="form-row">
-              <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" autocomplete="tel" />
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" autocomplete="email" required />
             </div>
           </div>
           <div class="form-row">
-            <label for="service">Project type</label>
-            <select id="service" name="service">
-              <option value="Landscape Design">Landscape Design</option>
-              <option value="Hardscapes">Hardscapes (patio, walkway, wall, fire pit)</option>
-              <option value="Rock Features">Rock Features (pond, waterfall, creek bed)</option>
-              <option value="Seasonal Installations">Seasonal Installations</option>
-              <option value="Something else">Something else</option>
+            <label for="location">Project location / nearest community *</label>
+            <input type="text" id="location" name="location" placeholder="e.g. Lake Burton, Clayton, Blue Ridge" required />
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="service">Project type</label>
+              <select id="service" name="service">
+                <option value="Landscape Design &amp; Installation">Landscape Design &amp; Installation</option>
+                <option value="Patio / Hardscape / Outdoor Living">Patio / Hardscape / Outdoor Living</option>
+                <option value="Retaining Wall / Boulder Wall">Retaining Wall / Boulder Wall</option>
+                <option value="Drainage / Grading / Erosion Control">Drainage / Grading / Erosion Control</option>
+                <option value="Deck / Pergola / Outdoor Structure">Deck / Pergola / Outdoor Structure</option>
+                <option value="Full Property Transformation">Full Property Transformation</option>
+                <option value="Not Sure Yet">Not Sure Yet</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="budget">Approximate budget</label>
+              <select id="budget" name="budget">
+                <option value="Under $10,000">Under $10,000</option>
+                <option value="$10,000-$25,000">$10,000 - $25,000</option>
+                <option value="$25,000-$50,000">$25,000 - $50,000</option>
+                <option value="$50,000-$100,000">$50,000 - $100,000</option>
+                <option value="$100,000+">$100,000+</option>
+                <option value="Not Sure Yet">Not Sure Yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="timeline">Desired timeline</label>
+            <select id="timeline" name="timeline">
+              <option value="As soon as possible">As soon as possible</option>
+              <option value="1-3 months">1 - 3 months</option>
+              <option value="3-6 months">3 - 6 months</option>
+              <option value="6-12 months">6 - 12 months</option>
+              <option value="Just planning / Not sure">Just planning / Not sure</option>
             </select>
           </div>
           <div class="form-row">
-            <label for="message">Tell us about your project</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+            <label for="message">Project description *</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell us about the property, the goals, and any problems you're trying to solve." required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary btn--block">Send Request</button>
+          <div class="form-row">
+            <label for="media">Photos or video (optional)</label>
+            <input type="file" id="media" name="media" accept="image/*,video/*" multiple />
+            <p class="field-hint">Photos or a short video walkthrough help us understand the property. If your email app doesn't attach them automatically, just reply to our follow-up with the files.</p>
+          </div>
+
+          <!-- Lead tracking: populated by JS from the URL + referrer -->
+          <input type="hidden" id="landingPage" name="landingPage" />
+          <input type="hidden" id="referrer" name="referrer" />
+          <input type="hidden" id="utmSource" name="utmSource" />
+          <input type="hidden" id="utmMedium" name="utmMedium" />
+          <input type="hidden" id="utmCampaign" name="utmCampaign" />
+
+          <button type="submit" class="btn btn--primary btn--block">Start Your Project</button>
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -134,7 +181,7 @@
     <div class="container site-footer__inner">
       <div class="site-footer__brand">
         <img src="assets/manscaped-outdoors-logo.png" alt="Manscaped Outdoors" width="56" height="56" />
-        <p>We craft outdoor experiences across Clarkesville and Northeast Georgia.</p>
+        <p>Premium landscape design, hardscapes, retaining walls, drainage, decks, pergolas, planting, and outdoor living for mountain and lake homes across Northeast Georgia and nearby Western North Carolina.</p>
       </div>
       <div class="site-footer__links">
         <a href="index.html">Home</a>

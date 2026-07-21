@@ -27,6 +27,29 @@
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
+  /* ---------- Same-page hash links ----------
+     The deployed copy carries <base href="/manscaped-outdoors/">, which makes
+     bare "#id" links resolve against the base (the home page) instead of the
+     current page — so the Services quick-nav would jump home. Reading the RAW
+     href attribute and scrolling by id bypasses base-href resolution, so these
+     links work identically with or without a <base> tag, and under cleanUrls. */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a");
+    if (!a) return;
+    var raw = a.getAttribute("href");
+    if (!raw || raw.charAt(0) !== "#" || raw.length < 2) return;
+    var target = document.getElementById(raw.slice(1));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+    if (history.pushState) {
+      history.pushState(null, "", window.location.pathname + window.location.search + raw);
+    }
+    if (typeof closeNav === "function") closeNav();
+  });
+
   /* ---------- Mobile nav ---------- */
   var navToggle = document.getElementById("navToggle");
   var nav = document.getElementById("primaryNav");

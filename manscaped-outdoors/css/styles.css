@@ -247,8 +247,8 @@ select:focus-visible, textarea:focus-visible {
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(28,24,19,0.55) 0%, rgba(28,24,19,0.25) 40%, rgba(28,24,19,0.75) 100%),
-    radial-gradient(120% 80% at 20% 30%, rgba(28,24,19,0.35), transparent 60%);
+    linear-gradient(180deg, rgba(28,24,19,0.62) 0%, rgba(28,24,19,0.48) 45%, rgba(28,24,19,0.82) 100%),
+    radial-gradient(130% 95% at 32% 45%, rgba(28,24,19,0.5), transparent 62%);
 }
 .hero__content {
   position: relative;

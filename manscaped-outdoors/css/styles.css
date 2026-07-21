@@ -782,6 +782,11 @@ select:focus-visible, textarea:focus-visible {
   color: var(--cream-dim);
 }
 
+/* Tighten the gap between the sticky sub-nav and the first service row
+   (the section top-padding + first row top-padding stacked into dead space). */
+.services-detail { padding-top: 0; }
+.services-detail .service-detail:first-child { padding-top: clamp(1.75rem, 4vw, 3rem); }
+
 /* ---- Services detail: alternating image/text rows ---- */
 .service-detail {
   display: grid;

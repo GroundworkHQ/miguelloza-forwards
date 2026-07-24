@@ -224,6 +224,19 @@
         "Photos/video selected: " + (fileNames || "none"),
       ].join(" | ");
 
+      // Lower bound of the selected budget range, sent so GHL can set the
+      // opportunity value to a conservative (minimum) forecast figure.
+      var BUDGET_MIN = {
+        "Under $10,000": 0,
+        "$10,000-$25,000": 10000,
+        "$25,000-$50,000": 25000,
+        "$50,000-$100,000": 50000,
+        "$100,000+": 100000,
+        "Not Sure Yet": 0,
+      };
+      var budgetVal = fieldVal("budget");
+      var budgetMin = BUDGET_MIN.hasOwnProperty(budgetVal) ? BUDGET_MIN[budgetVal] : 0;
+
       var payload = {
         first_name: fieldVal("firstName"),
         last_name: fieldVal("lastName"),
@@ -231,7 +244,8 @@
         phone: fieldVal("phone"),
         project_type: fieldVal("service"),
         project_location: fieldVal("location"),
-        budget_range: fieldVal("budget"),
+        budget_range: budgetVal,
+        budget_min: budgetMin,
         desired_timeline: fieldVal("timeline"),
         project_description: fieldVal("message"),
         lead_source_detail: leadSource,

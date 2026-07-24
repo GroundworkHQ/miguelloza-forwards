@@ -167,7 +167,7 @@
 
   /* ---------- Lead-source tracking ----------
      Capture landing page, referrer, and UTM params into hidden fields so the
-     mailto body carries them today and a real backend can consume them later. */
+     webhook payload can carry them into GHL as the lead source. */
   (function captureLeadSource() {
     var form = document.getElementById("estimateForm");
     if (!form) return;
@@ -183,31 +183,30 @@
     setHidden("utmCampaign", params.get("utm_campaign"));
   })();
 
-  /* ---------- Contact form (mailto fallback) ----------
-     Works with no backend on static hosting. Future: point this at Resend /
-     a Formspree endpoint and drop the mailto build. File uploads require the
-     real backend — mailto cannot attach files, so we only list filenames. */
+  /* ---------- Contact form -> GoHighLevel inbound webhook ----------
+     POSTs the qualification fields to a GHL workflow (Website Contact Form to
+     Lead) that creates the contact, opens an opportunity in the Manscaped Sales
+     pipeline, and emails the team. Keys must match the webhook's captured
+     sample. Files can't ride a JSON webhook, so we pass the selected filenames
+     along as a note for follow-up. */
+  var GHL_WEBHOOK_URL =
+    "https://services.leadconnectorhq.com/hooks/2MVEWGtchrrU6VUrsT1u/webhook-trigger/bc9b3995-11eb-42e7-b28f-7695e7c6296a";
   var form = document.getElementById("estimateForm");
   var note = document.getElementById("formNote");
   if (form) {
+    var submitBtn = form.querySelector('[type="submit"]');
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
-      var to = form.getAttribute("data-mailto");
-      // Read fields defensively so this works whether the form uses a single
-      // "name" field or split "firstName" / "lastName" fields.
       function fieldVal(nm) {
         var el = form.elements[nm];
         return el ? el.value.trim() : "";
       }
-      var name =
-        (fieldVal("firstName") + " " + fieldVal("lastName")).trim() ||
-        fieldVal("name");
 
-      // Collect any attached file names (can't attach via mailto).
+      // Selected file names (the JSON webhook can't carry the files themselves).
       var mediaEl = form.elements["media"];
       var fileNames = "";
       if (mediaEl && mediaEl.files && mediaEl.files.length) {
@@ -216,58 +215,61 @@
         fileNames = names.join(", ");
       }
 
-      var data = {
-        name: name,
-        email: fieldVal("email"),
-        phone: fieldVal("phone"),
-        location: fieldVal("location"),
-        service: fieldVal("service"),
-        budget: fieldVal("budget"),
-        timeline: fieldVal("timeline"),
-        message: fieldVal("message"),
-      };
-
-      var subject =
-        "New project inquiry: " + data.service + " (" + data.name + ")";
-      var lines = [
-        "Name: " + data.name,
-        "Email: " + data.email,
-        "Phone: " + (data.phone || "-"),
-        "Location / nearest community: " + (data.location || "-"),
-        "Project type: " + data.service,
-        "Approximate budget: " + (data.budget || "-"),
-        "Desired timeline: " + (data.timeline || "-"),
-        "",
-        "Project description:",
-        data.message,
-        "",
-        fileNames
-          ? "Photos/video selected (please attach when your email opens): " + fileNames
-          : "Photos/video: none attached",
-        "",
-        "--- Lead source ---",
+      var leadSource = [
         "Landing page: " + (fieldVal("landingPage") || "-"),
         "Referrer: " + (fieldVal("referrer") || "-"),
-        "UTM source: " + (fieldVal("utmSource") || "-"),
-        "UTM medium: " + (fieldVal("utmMedium") || "-"),
-        "UTM campaign: " + (fieldVal("utmCampaign") || "-"),
-      ];
-      var body = lines.join("\n") + "\n";
+        "utm_source=" + (fieldVal("utmSource") || "-"),
+        "utm_medium=" + (fieldVal("utmMedium") || "-"),
+        "utm_campaign=" + (fieldVal("utmCampaign") || "-"),
+        "Photos/video selected: " + (fileNames || "none"),
+      ].join(" | ");
 
-      var href =
-        "mailto:" + to +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+      var payload = {
+        first_name: fieldVal("firstName"),
+        last_name: fieldVal("lastName"),
+        email: fieldVal("email"),
+        phone: fieldVal("phone"),
+        project_type: fieldVal("service"),
+        project_location: fieldVal("location"),
+        budget_range: fieldVal("budget"),
+        desired_timeline: fieldVal("timeline"),
+        project_description: fieldVal("message"),
+        lead_source_detail: leadSource,
+        source: "Website Contact Form",
+      };
 
-      window.location.href = href;
-
+      if (submitBtn) submitBtn.disabled = true;
       if (note) {
-        note.textContent =
-          "Thanks for reaching out. We're opening your email app to send the request. " +
-          "We'll review your details and follow up with the best next step. If nothing " +
-          "happens, email us at " + to + ".";
-        note.className = "form-note is-success";
+        note.textContent = "Sending your request...";
+        note.className = "form-note";
       }
+
+      fetch(GHL_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Bad response " + res.status);
+          form.reset();
+          if (note) {
+            note.textContent =
+              "Thanks for reaching out. Your request came through and we'll follow up " +
+              "with the best next step. For anything urgent, call (706) 903-9564.";
+            note.className = "form-note is-success";
+          }
+        })
+        .catch(function () {
+          if (note) {
+            note.textContent =
+              "Something went wrong sending your request. Please call (706) 903-9564 " +
+              "or email sales@manscapedoutdoors.com and we'll take care of you.";
+            note.className = "form-note is-error";
+          }
+        })
+        .finally(function () {
+          if (submitBtn) submitBtn.disabled = false;
+        });
     });
   }
 })();

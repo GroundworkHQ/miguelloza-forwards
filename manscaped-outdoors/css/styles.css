@@ -532,6 +532,17 @@ select:focus-visible, textarea:focus-visible {
 }
 .contact__form input[type="file"]::file-selector-button:hover { background: var(--trunk); }
 
+/* ---------- Legal ---------- */
+.legal { padding-block: 3rem 5rem; }
+.legal .container { max-width: 760px; }
+.legal h2 { font-size: 1.4rem; margin-top: 2.2rem; margin-bottom: 0.7rem; }
+.legal h2:first-child { margin-top: 0; }
+.legal p { color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+.legal ul { color: var(--muted); line-height: 1.7; margin: 0 0 1rem 1.2rem; }
+.legal li { margin-bottom: 0.4rem; }
+.legal a { color: var(--ember); }
+.legal__updated { font-style: italic; color: var(--muted); margin-bottom: 2rem; }
+
 /* ---------- Footer ---------- */
 .site-footer { background: var(--bark-2); color: var(--cream-dim); padding-top: 3.5rem; }
 .site-footer__inner {

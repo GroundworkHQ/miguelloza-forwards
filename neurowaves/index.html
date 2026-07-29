@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/neurowaves/" />
+<meta charset="UTF-8" />
+<title>Neurowaves — Concept Redesign</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --ink:#0E2429;
+    --ink-soft:#16333A;
+    --ink-line:#26494F;
+    --sand:#E7E8E1;
+    --sand-soft:#DBDED2;
+    --line:#C7CCBE;
+    --text:#1C2624;
+    --text-soft:#51625D;
+    --kelp:#3F7C6E;
+    --kelp-bright:#8FD6C4;
+    --coral:#D97A52;
+    --coral-bright:#F0A272;
+
+    /* fixed — for the permanently-dark ink sections (header/hero/visit/footer);
+       does not flip with theme, unlike --sand which is the page's light-section ground */
+    --paper:#F1EDE2;
+    --paper-soft:#AEBAB5;
+
+    --font-display:"Iowan Old Style","Palatino Linotype","Palatino","URW Palladio L",Georgia,serif;
+    --font-body:"Avenir Next","Avenir","Century Gothic","Segoe UI",Corbel,sans-serif;
+    --font-label:"Avenir Next Condensed","Avenir Next","Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --sand:#141F1D;
+      --sand-soft:#1A2724;
+      --line:#2B3A37;
+      --text:#EDE7D9;
+      --text-soft:#AFBCB6;
+      --kelp:#6FB8A6;
+      --kelp-bright:#9BE0CC;
+      --coral:#E3946A;
+      --coral-bright:#F3B78C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --sand:#141F1D;
+    --sand-soft:#1A2724;
+    --line:#2B3A37;
+    --text:#EDE7D9;
+    --text-soft:#AFBCB6;
+    --kelp:#6FB8A6;
+    --kelp-bright:#9BE0CC;
+    --coral:#E3946A;
+    --coral-bright:#F3B78C;
+  }
+  :root[data-theme="light"]{
+    --sand:#E7E8E1;
+    --sand-soft:#DBDED2;
+    --line:#C7CCBE;
+    --text:#1C2624;
+    --text-soft:#51625D;
+    --kelp:#3F7C6E;
+    --kelp-bright:#8FD6C4;
+    --coral:#D97A52;
+    --coral-bright:#F0A272;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--sand);
+    color:var(--text);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,canvas{display:block;max-width:100%;}
+  a{color:inherit;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0;}
+  p{margin:0;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  .eyebrow{
+    font-family:var(--font-label);
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:12.5px;
+    font-weight:600;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:color-mix(in srgb, var(--ink) 92%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--ink-line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;max-width:1120px;margin:0 auto;
+  }
+  .brand{
+    display:flex;flex-direction:column;line-height:1;color:var(--paper);
+  }
+  .brand .name{
+    font-family:var(--font-display);font-size:20px;letter-spacing:0.04em;
+  }
+  .brand .est{
+    font-family:var(--font-label);font-size:10.5px;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--kelp-bright);margin-top:6px;
+  }
+  .logo-mark{
+    height:44px;width:auto;
+    filter:invert(1);
+    opacity:0.94;
+  }
+  footer .logo-mark{height:24px;}
+  nav.links{display:flex;gap:32px;}
+  nav.links a{
+    color:var(--paper-soft);text-decoration:none;font-size:14.5px;
+    letter-spacing:0.02em;
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  nav.links a:hover, nav.links a:focus-visible{color:var(--kelp-bright);border-color:var(--kelp-bright);}
+  .nav-cta{
+    font-family:var(--font-label);font-size:12.5px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--ink);background:var(--coral-bright);
+    padding:9px 18px;border-radius:2px;text-decoration:none;
+    border:1px solid var(--coral-bright);
+    transition:transform .15s ease;
+  }
+  .nav-cta:hover{transform:translateY(-1px);}
+  @media (max-width:760px){
+    nav.links{display:none;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;background:var(--ink);color:var(--paper);
+    padding:76px 0 88px;
+    overflow:hidden;
+  }
+  .hero canvas{
+    position:absolute;inset:0;width:100%;height:100%;opacity:0.55;
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .concept-tag{
+    display:inline-block;color:var(--coral-bright);
+    border:1px solid color-mix(in srgb, var(--coral-bright) 55%, transparent);
+    border-radius:2px;padding:5px 10px;margin-bottom:28px;
+    font-family:var(--font-label);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  }
+  .hero h1{
+    font-size:clamp(34px, 5.2vw, 58px);
+    max-width:15ch;
+    color:var(--paper);
+    line-height:1.08;
+  }
+  .hero p.sub{
+    margin-top:26px;max-width:52ch;
+    font-size:18px;line-height:1.6;color:var(--paper-soft);
+  }
+  .hero .ctas{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-label);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+    padding:14px 26px;border-radius:2px;text-decoration:none;display:inline-block;
+    transition:transform .15s ease, background .2s ease, color .2s ease;
+  }
+  .btn-solid{background:var(--coral-bright);color:var(--ink);border:1px solid var(--coral-bright);}
+  .btn-solid:hover{transform:translateY(-1px);}
+  .btn-outline{background:transparent;color:var(--paper);border:1px solid var(--ink-line);}
+  .btn-outline:hover{border-color:var(--kelp-bright);color:var(--kelp-bright);}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:96px 0;}
+  section .eyebrow{color:var(--kelp);}
+
+  /* ---------- PHILOSOPHY ---------- */
+  .philosophy{
+    display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;
+  }
+  .philosophy .quote{
+    font-size:clamp(26px, 3vw, 36px);line-height:1.28;
+  }
+  .philosophy .body p{
+    font-size:16.5px;line-height:1.75;color:var(--text-soft);
+  }
+  .philosophy .body p + p{margin-top:18px;}
+  @media (max-width:820px){
+    .philosophy{grid-template-columns:1fr;}
+  }
+
+  /* ---------- SERVICES DIRECTORY ---------- */
+  .directory-head{max-width:60ch;margin-bottom:52px;}
+  .directory-head h2{font-size:clamp(26px,3.4vw,38px);margin-top:14px;}
+  .directory{
+    border-top:1px solid var(--line);
+  }
+  .row{
+    display:grid;
+    grid-template-columns:64px 1.4fr 160px 1fr;
+    align-items:center;
+    gap:28px;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .row .ch{
+    font-family:var(--font-label);font-size:12px;letter-spacing:0.06em;
+    color:var(--text-soft);
+  }
+  .row h3{font-size:19px;}
+  .row .desc{font-size:14.5px;line-height:1.55;color:var(--text-soft);}
+  .row canvas{width:100%;height:34px;}
+  @media (max-width:780px){
+    .row{grid-template-columns:40px 1fr;grid-template-areas:"ch title" "wave wave" "desc desc";row-gap:8px;}
+    .row .ch{grid-area:ch;}
+    .row h3{grid-area:title;}
+    .row canvas{grid-area:wave;}
+    .row .desc{grid-area:desc;}
+  }
+
+  /* ---------- FAMILY ---------- */
+  .family{background:var(--sand-soft);}
+  .family-head{max-width:60ch;margin-bottom:48px;}
+  .family-head h2{font-size:clamp(26px,3.4vw,38px);margin-top:14px;}
+  .people{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+  .person{
+    background:var(--sand);border:1px solid var(--line);border-radius:3px;padding:28px 24px;
+  }
+  .avatar{
+    width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(155deg,var(--kelp),var(--kelp-bright));
+    color:var(--ink);display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-size:19px;margin-bottom:18px;
+  }
+  .person h3{font-size:18px;}
+  .person .role{
+    font-family:var(--font-label);font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--kelp);margin-top:6px;
+  }
+  .memorial{
+    margin-top:44px;padding-top:28px;border-top:1px solid var(--line);
+    font-size:15px;color:var(--text-soft);font-style:italic;
+  }
+  @media (max-width:820px){
+    .people{grid-template-columns:1fr;}
+  }
+
+  /* ---------- VISIT ---------- */
+  .visit{background:var(--ink);color:var(--paper);}
+  .visit-grid{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start;
+  }
+  .visit h2{color:var(--paper);font-size:clamp(26px,3.4vw,38px);margin-top:14px;}
+  .visit p.lead{margin-top:18px;font-size:16.5px;line-height:1.7;color:var(--paper-soft);max-width:48ch;}
+  .facts{display:grid;gap:22px;}
+  .fact-label{
+    font-family:var(--font-label);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--kelp-bright);
+  }
+  .fact-value{font-size:17px;margin-top:6px;}
+  .fact-value a{text-decoration:none;border-bottom:1px solid var(--ink-line);}
+  .fact-value a:hover{border-color:var(--kelp-bright);color:var(--kelp-bright);}
+  .disclaimer{
+    margin-top:52px;padding-top:24px;border-top:1px solid var(--ink-line);
+    font-size:13px;line-height:1.6;color:color-mix(in srgb, var(--paper-soft) 75%, transparent);
+    max-width:70ch;
+  }
+  @media (max-width:820px){
+    .visit-grid{grid-template-columns:1fr;}
+  }
+
+  footer{
+    background:var(--ink);color:var(--paper-soft);
+    border-top:1px solid var(--ink-line);
+    padding:26px 0;
+    font-size:13px;
+  }
+  .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  @media (prefers-reduced-motion: reduce){
+    * { animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+</style>
+
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <img class="logo-mark" src="data:image/png;base64,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" alt="Neurowaves, Inc." />
+      <span class="est">Est. 1997 · Dana Point, CA</span>
+    </div>
+    <nav class="links">
+      <a href="#philosophy">Philosophy</a>
+      <a href="#services">Services</a>
+      <a href="#family">Family</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <a class="nav-cta" href="#visit">Schedule a Visit</a>
+  </div>
+</header>
+
+<section class="hero">
+  <canvas id="heroWave"></canvas>
+  <div class="wrap hero-inner">
+    <span class="concept-tag">Concept redesign — prepared for Neurowaves, Inc.</span>
+    <h1>Every therapy here starts as a frequency.</h1>
+    <p class="sub">Neurowaves is a three-generation naturopathic practice in Dana Point, blending gentle bioenergetic medicine &mdash; CranioBiotic Technique, microcurrent, bio-communication &mdash; with old-fashioned family care, so the body can do what it already knows how to do.</p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="#visit">Schedule a Visit</a>
+      <a class="btn btn-outline" href="#visit">New Client Intake</a>
+    </div>
+  </div>
+</section>
+
+<section id="philosophy">
+  <div class="wrap philosophy">
+    <div>
+      <span class="eyebrow">Our Approach</span>
+      <h2 class="quote">&ldquo;We don&rsquo;t override the body. We listen to it.&rdquo;</h2>
+    </div>
+    <div class="body">
+      <p>Founded in 1997 by naturopath George Weinand, Neurowaves grew out of a simple conviction: the body already carries the ability to heal itself, and most of the work is removing what&rsquo;s in its way. Nearly three decades later, that same conviction still runs the practice &mdash; non-invasive, whole-person, and unhurried.</p>
+      <p>Today it&rsquo;s carried on by Jeff and Dolly Erickson, alongside Gayle Weinand &mdash; three practitioners, one waiting room that still feels like a living room.</p>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="directory-head">
+      <span class="eyebrow">The Directory</span>
+      <h2>Ten ways to listen to a body.</h2>
+    </div>
+    <div class="directory" id="directory"></div>
+  </div>
+</section>
+
+<section id="family" class="family">
+  <div class="wrap">
+    <div class="family-head">
+      <span class="eyebrow">The Practice</span>
+      <h2>Three names, one family.</h2>
+    </div>
+    <div class="people">
+      <div class="person">
+        <div class="avatar">JE</div>
+        <h3>Jeff Erickson</h3>
+        <div class="role">Naturopath</div>
+      </div>
+      <div class="person">
+        <div class="avatar">DE</div>
+        <h3>Dolly Erickson</h3>
+        <div class="role">Naturopath</div>
+      </div>
+      <div class="person">
+        <div class="avatar">GW</div>
+        <h3>Gayle Weinand</h3>
+        <div class="role">M.A. Education</div>
+      </div>
+    </div>
+    <p class="memorial">In loving memory of George Weinand, Naturopath, who founded Neurowaves in 1997.</p>
+  </div>
+</section>
+
+<section id="visit" class="visit">
+  <div class="wrap visit-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--kelp-bright)">Visit</span>
+      <h2>Come sit down with us.</h2>
+      <p class="lead">Most first visits start with a conversation, not a chart. Reach out and we&rsquo;ll find a time that works.</p>
+      <div class="ctas" style="margin-top:32px;">
+        <a class="btn btn-solid" href="tel:9493638250">Call the Office</a>
+        <a class="btn btn-outline" href="mailto:jefferickson@neurowaves.com">Email Us</a>
+      </div>
+      <p class="disclaimer">Neurowaves offers nutritional and educational information to support your relationship with your own physician. Nothing on this site is a diagnosis or a prescription.</p>
+    </div>
+    <div class="facts">
+      <div>
+        <div class="fact-label">Office</div>
+        <div class="fact-value">949&#8209;363&#8209;8250</div>
+      </div>
+      <div>
+        <div class="fact-label">Email</div>
+        <div class="fact-value"><a href="mailto:jefferickson@neurowaves.com">jefferickson@neurowaves.com</a></div>
+      </div>
+      <div>
+        <div class="fact-label">Address</div>
+        <div class="fact-value">24531 Jeremiah Dr. Unit A<br>Dana Point, CA 92629</div>
+      </div>
+      <div>
+        <div class="fact-label">Hours</div>
+        <div class="fact-value">Monday&ndash;Friday, 9am&ndash;5pm</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <span style="display:flex;align-items:center;gap:10px;">
+      <img class="logo-mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAABECAYAAAB6WXVJAAAYhUlEQVR42u1dCbRW1XUWeAwP3mOeQZkiPFGCCuIDGQo8Zp7MyJuB9wARwQkjREEcGhWNQ22UpjZpk9YYU5NWk6VL22BMrE0xODTJog5NtA5Nl5oYtdFKQvfn+o49Hs6999z/3v/5qvtb66z7/3c499xzzv3Ovnvvs88xxygUCoVCoVAoFAqFQqFQKBTpMW5sxWBJ8yStq1u1tFbSEkmLJK2umjG1SfavljSuf7++HbS2FAqFoo1CSLqTkPVSIe9NQt4b5fcCSUNizu8mxyeR/DfKNc0YELQmFQqFom2Qem8h5nMkbRJyHupI7+WQziXNkbRKUp2kaklT3HMln86yb4UQ/XbZjteaVSgUio+H1EsgbYPU5XdXi9AnyL4zJdWDrCVNpIqmG66RbR9Jo0n4jULmIP25cqzcymOu7N8p+wZqTSsUCkXrEfvxQr67ZDuY/8sM0Qsxjyggv06U2s83UjsHD6h4VmqNKxQKRZEhZDvbEC4JeB3UMrbkTen7s0LWN+OcNPnLdVWU2o/l/xOhw1fDq0KhUBSP2JdJmkBiHy4kfJlsB0VI4wOEmJs9+wclEb4cbw+PGknL+b9c7nUe9PLaCgqFQpEvsa8Uch3L31Mkrcqap+RXmnB8lNynhb+7CMFflPZLQKFQKBTRxD5PUiV/z5I0wzk+tMB8rxTpvtLdL/v6S+pMUu8ppL4NahlK8BdqiygUCkVGCMlWGPUIJfaZeeQrJL0ZBlRJd0M/nyDBd5f7nsvfx8ITR1tGoVAoCgS8WOB3zt8jhVRX5PxFcKkQ++mBZRliSF228+W6U7WFFAqFojDyXQ+pWVJH/C7C4FGa8iviNEPqVNW011ZSKBSKdMQ7WAh9EUm+EQZND9meCvJPIOTjch5wmuA1I6lv3l8SCoVC8WmQ2ltIzsfL74URA0AP+LljFmoxyyL5LzFeMohJY8rGLwv1f1coFIpAqb2ncXVEIDASaTU8ZeKuY8THdbg+48AyySL2XpLvtzCZyTpeh1mxkvqB+LXFFAqFIoxcQZ5dSZ4LSdx1sn9pwMCAUASNkiYXen/q00ti7tFZ8l/Dc1u0xRQKhSKMXFsski940hAiRiKWu2yHucZTSt69rP/d5NxzZDBZJumPMKjgvwlD4BmAGijZr8z6paBQKBSfeGCiEBbSIMk3cl9pxjwRGGyB5FcT5cIox871eb9Avx5hzK2U9BlJvSUt15ZTKBSKGAhRLpY0AMZS2Z5Jcu6fY/4nCZFvgOQN6d0i9y9IuljSVZLWSrqa2xvlmuGeAaOD7K/htc3acgqFQhFPvk3cYom8vgkSOQaANfzdUX5PhWQu6QTGbUfwMOjty1yp3BhErfuOFsIHoX9ZfoPU78AWMd+j7g87ALdN2nIKhUIRAyHKFSTbWg/xz5U0P2ZgGIVQAph1irjuXEZvEfTikhpI1h8k6OGda7GAxxSjCoLUzv1HkbsMAgN4Tg3/K7m3zsA/gIuvVEk6GZ5MWiutBy52U0GbFBa7mYB5JLL/k9C3hpI3qsgh/T8Jz9XWyH2hTZwWoc7CAh2SdsjvqoCO2Esa6BTrK6Aa0jrWTEUCIYPAzTqracjd6hC13MLw2y6wE82UvF+SdHvKesGzv4ROZ+27T9J/8Ng5iFop6UrkLenvJP1Y0gu834fJKstU5lmdsiw7eV2ZU5YX0T5Yk9ZJmyR9juV6SNI+uXZaIKFgLgOe74uYV8AXELaOMxDvR/bfgi3sKr7rMdEMZTXeTZ72OIn1ssdz7dl8zmkR185i3i0x7Y3Ac89L+npA35jL/DYWQE61LCuEmc58pn+F5xfsSax/qB6/Iul+SU+w79h942899d8OXmpybDfXGZ7C+sf7MlP2oS/8g6RvIgZU6HsQ926gHty+Bg+4lH0Uz/iDhPsNZJ3sRf1xsIKAOFXud4nsf0TSX4f2VUVyo8zjtt7zsp0V9ZJ6Gg6S+yj+xijcMeaeO2yp3k1yzxsj7lEDdQ++JiR1CSwXDLuvSTqSZpUnOfcyXIMOaZX7nyX9LIEcoa4aAy8gyeMKOX+/VZbZzHNVyja6htd1d8rydABZw1V1t5z7PyCauElgcl4N8pXt9IS6WS3nHZDtNM/9EKr5V5IOxjzPo5LesG0w3I+B6FdRHluwx0j6vbser3P/Ujnntzzv+IS66SDn/buk59KGtsBcDElvwYUYfRHtI+lPE/piN6oxG+Tcm1yBA7OwZd8DIPU4KZYDQJ2c+xtJD/ocEFK8G0fsuSMk39clvSn7R6aoDww4h2L6DIIGPhwXNJDPhQCDv5P0V1EChCK8UeZwe5Q0BqJyF8yQxilJ0s1b536G66ZuMGEJ2Hn+mMbUq5muogS6hf//HPtsSZX5LcS9KU32CO3A0mHmUpp7HQHJAq/bEkHu/5JBUjLkvjIncg8uCyabkYC+GHEc0vqTocZ0Of8EOf8Xvoidsu9ylndmjHSPwXab1dfgGvtuHEGCPOzBMqKOz+IX1R+SyJZlOY9lWZZGXSLX/Np8HVjkfl0GFUw7uf5HECpStGkl6ky2F+VI7pdjAJLtexiEQ2eEc7A75HmuY/g+P4Q2DnwufKG9h0CDytA5kTs+d0Ml9YgOCrfKxchHtmOhL3SlCvjU8xOzkoZUpEZ8cmMA4L5G32QlSuwDqdvvGdqBcR3CF0ue70PCCPmU5Wd3sch9Rco2ykzuvOYx1IEr+cKTCVKgz0sp4SU8Q677b2yd5+xP6eu+iH7SnoPt80ZiBsHwGadE1N1IkvCGhGe8nYQCNcHbmHuR1GdJ1I+kaMcZLOuCvMgdnmogtFChxWqDvXLdDTmS+zVQM1FNgvreHdi3/sxH7vwCfiHt3BS57tqkgVwRTu5rjYSXktARumAjpfM1kgYldCgQ7dWyxeLa5zJtkXQ2lunDf0h+PokwA7kbQ+wV7LAXpej4xSD35SnbKBdyl+fewXw2O0T8lhzbWmD/uRWqDVcNR2kNqpExEWXZyrZYzvP3MZ+osuNL6t04oy6+6uScL/H3HOa/M+AZrme9nJaiPT5UH+VB7szzmQIEquMKdV2OIfeBHID3Q51nhweJKf+1LrlLPuNk32GEMimgbFiVrVYZOidyR2OAoG1p2yY3a98Y42VT4D03JDRssysJZiT3zdbn9GMkifEJ11UWkdyXFfDi+8j9QMr715KErrfyge73NeiOC3wmrK37PnSlzv6xVI3cFkFKZdC7QxVBSfsFDPoxdfA9Sd9JGLzOMXXLPJ+S9HKc/YdlPZY2iTsD2wP53mpdnwe5ox1ebs13P4bcx1r1gjZ61rWPePK6xCV3tBdsVFmMvop8yB3eLHC3OhFW7CJ3qsaE42stEhjKT+0uJPcBacldXvrP2xIBDW4/jTNEcQArFrkvTdlGeZH7epLQFZZ65L8wxyBjH4KXw2Oe/VCNvIM5EDHSHspzKZ/vxIiBoAvzWZ1QDhjsyi2yX0vpvSHgGe4EwYPQEupwCAYtW32Uk1qmOUTt1ErkfoZVh6v5bHck5LXRJnd6Lb2fxoagKLJahh4EO7BYdV73kLwGxpD3yfSSWW6TP4iHsWpuw0pMMMQWKrnbkqpRPbHD3hJzXb8ikvuSlG2UC7nDwMh8FrE8k/g/0zKGVHcddkncUo18PoYo32NbPJnQhm/GhcXgoP2PTr/DymKvwA0xyYcaKhmWY2/Cs7bQVnBMnuROg/Iv+LVzJ4zRxV4cPobcq51+85col1GhReS1yiH31cxb3RrbiFqmq7XflnbLbH/vjB2qzDYoGqI3gwv3LTHkTenypixqGbn+LzzP/S122HkR15VQQnPJ/cVCXbQscj+ztckd8xDo4vacpStuYr6TMrZpnc8YStXI0yDYqDqDXzOJ8eaY578FBJNAurt8thR4XLBsswK/QH4dp4KQ49921UcWud+VUQg6XvJ4nHkhvQO1FewItEmdlqRiyoncG51yldMADvXd4Ii8qmxyp/st8u6nLNsGyN0KHIZQAidJA13PSUgr4Hsbslg2zsMEjJgONRKTFhLIfaakYZ5rCyX373hepN6cVALi6RtRN296yB2S1d9w8hJI55t8AZ8BcdrJ48qZN7k/Hkga5fQhf9v2bJH8Lma+IzKSxNwoW4L5SoqaFGPZAb4a8/zP2hNtIs45ZHTFTv59SJLfDei7S10XTaceO7JPjI0g97cxSNHV9zZObDvg9gtJ98a0VTv0cxqkf04PryMO4e+HQTppVbQM5H6ep24msywP+nToUOXa5I4BCQZ1XVynbZD7+cbQaUgevr/o6EY3DZ9g91PRVbnAco+BIaZDVdoeFDRcYmCptfad4pvskIHcH454meFP+3u8hL7Pdhj5POT+04j7dMZzcyCEz/jfY9JKBLlXF5vcGWitgn7c+Nx/1I3QSSPYEd9AmpIkqqL89zFPQo69Sh9637WNJK03fBIzJiLh+jiSoErllzH1d1uc545VVnwlPku1SwfPfWb5JmclTWKCeyP7bD1UN1FG5ohrS7mW8HpO4nqE8wFwv9ezuC5HkTu81SLelz0c/C7w5DXCIXd4Px1WY2rbIPcLjM+xIXc22mAjaTKCZO+MRLAkKUYJpyRP4ySq7jmQ+1Mxz7+XHXaj59iTHnL/SYZnLwq5IwY+DFoMD/AoJcjvy76t0IWamcOe8qxnvhMztuka5jM1ghQui1KNwFAn6d/YBls9126LU9kwj5vjCBPzKjiI7wuQ3rfYLppuX5H922PI/YbWeGcZImIb1Wx/MKuo5UXuUbYo2uP+CXMY4Fnn5NXTUcvsYd59lGXbgFrGJnRuh/DYRmlYeNHMoA5zHddSXZ72kx6EwkBIkUnyxgCwmB2qJAdyfzHmRYHR7SAIESTg1M3+/w/k7pGU7+IMvzUJ5ZnGfFdn6UMwmNI+MSjiPn19qhHq5J+X6/u4k5qs53wgziZAwnlV8tgEV0h8MVFNdjdi1ZhJTFCF0OMmKfJpN5Lmjzzt8LQv9EFrk7tV1lEM9fBC2vAJCeT+tTi1KlRTiKNje5txhu3PrPMa8rDnKHImd2kozCwtkZdjNoxkIHLoI/mJiE/wJSTgnvgP9y0Eq0KgqYAOBcPt8IQEyb0uR7XMWwnnVJB8DtgGK/l/j4fcH2/L5G7phh/kBJT5MeRgptF/KWMfgj7/iYRz9lE1UmHVx3gYKC0J/SMSM3zvQahxni4IUmfpoxHv5nwGrkMfRRiC+zH4IPgd8090zZNzTH2fbt3nuKgZkxa5X9/a7y+fMdKNtEBy/27CPZt8RnBI9VbeA9Decu7FyrJtgNwlVVk675PYkJDQh4HEjZ7avJg8DzMcF1B9Mx7BueL8xxE1Ly5omJXW5UjukCo7JnTYzXz5v2CrDHIm92k5k/tPYoi7N4NivRGllrHUIi8V6oXBl/h3mK4eMIB+RDWCGbNGT29NavqhdQ1CWexJqJuv8SulIebeJ2PdAIRKoP6+U0JZB9NF8y6rrJuiolHmQe70yf+l+WpOUf+T4+L4FEjujwb0ybtI3vOsfd9zzkEwsR8ry7YNcl/tOd7M7XrzopgQBQxv2kLD6yRJ0MmPg3TEoGFHSeVy/tmBnX2bey0khgLJ/UiSKydVBPdyuvR0o2P1kPuBQuuaRqfUfuUI9pWW3FmHExjj5aAbAM4q03CSY2OBpIRAb/8ZEhQKEqGtGkHsGVsQMJOajMQMA6WrKnPaDJL9WzA0BqgwOtN75UhIiA0OGu9bAe/ujrIVWeS+N8N7+EzSDNyIe5u5CmNyJPefB9RnL4a3fsUswgO3Vif/KRSspheodipXhs5fLVNmpBtjELEXyGBw/QnW/6U0RN0OvSfjct/q06fDcBtYrl0eXfznMpB7RUBn6kfPjg8CHck1O/Mkd+bxHIIipbzmnkLI3UicJJ59Medsp0TbLyU5IDb7O1DRBZ4/y6hG4EECado5PsSWmEGoCc9mgruNDiSLHpyR+3TApKZT6PZ6A+0yX485Nw9yPxBSLk8dwIh+qJCFLmLI/dXAeyOA2mHjbWaHZLDyu5WzwVOty8zB+B5l6HzI3faQqTBBlDhTrjskcWnMGyy1yVbr93o5Z7yRpqxrzzDEbCQ0+z4J5WrkQtsYEC6Cugeqk0JC/rIDTw7ssPP5Un8DMWnynKFq1FwMOtU7sJP3pnT6GzuGfRrjLogpyhvF+mpBVL/9oWFZMZkFEp7PeyTh6+gJGkDRf+ZElBX+1GugP094LsSbeTZl/e9if5gTUG/fR71z0YxVAeR+XYZ+YUIlbE5Rn90pLCwu8EsyitzfTVHua1huCBFXespYwnb6RuiMWwpZUOm85pS3VBk7Hbkv4HarJSHDSHoVf8+Bnp0kuyOgYTpa3jbHGpWKNStybQpyh6/2MIYi6A7DLV4kLs3VNWUHXpSiTm7hy/q8h9yfCrhnVy5Pt8HnecAgUT9MiuZHPfQD0MW6kfnSkDtjs/yAOtL1UcQL4xf8qJM+8fm5fRBxRwogsQbW7SsRvuRGYj4cF2GUth4E+/qTlIRmPHfuDzh3Mcv6ZkIcoi5J4Sysc/vwvbrQxPix6mY3VWSXB9gFBiHcgqtiIjF+Bc4QGcj9SOj7ReP947Rn7I84pwNVi/cl2RQ49+RFRio9y9p/IQ3yS5S1w4nsTFZeS4AXS6YQBFxFqd7Zd1RsmSgJ3xhZMRMyyUDq6cD1KcrZhUum+WLLHKZaAVL9BVyYArPxvs3jL5OcPpxVGNGJq9HZYcDlFw4murTjdiJVJZjqvtn3ovNeB1NKeffSL3pX1OQSDKaMQXMd19AdzAlaiLW/nD7l12AWc4F9oBPr6KYEifmhAHVEqkHbyv926oLHJpS1HRcI+WpCHzPk/hK/SBDCejsXobmDkutBGozt2aYPe/L6LO4HwkQ78Su1JxfJ6U9vNcTyucm3UhLjwh8JiYWeQO5DUwyYozm34lCAGu/LXIhnOp+nE+1pDcbrCrGK3Gi0jOnz25AvLsX/NWY9K74m61RhjOKYDBS1TBsbc76zb62r8+f/Bk9ZG2yS/yQARjp+iazhHAAMXNPSLtqQN/jVNJHlweBbDXc7XcS41eq/PRe1WczF5tdzQtr4OM8mttvKqBW32sizgdAno5wMbwI366m2TUmRD7k0cTsBn4W2OyKMGlgMAMvbOY0znMe7ItgRz8dqSnNgiOSMyQYjEbAhF3B6/qkR5N7kUcv0g8+ybMdyhabdvoFAoVB85J0aEzVbWPHp6ghYgXwcR/zaIt9rlvu554stw/1uZLoSUz7MkNWWUyi8UnHXpIVoFJ+uzz9DmnVx5zEMQQnVL3UFkHtN6GQZl9yplx5Fz51qbTmFQqFIgJGaofuiVwqi7M3nsSpK1ttBsLJFJEEYjKbLFrE8mmgkm2qCCfF/E6/7IHElpbUpBoJ63n8FjL7GwApi18kNCoVCEUakc7kobqkQe02x7pNmFiSjR/bgYFFuvGlc3bxCoVAoIsAgYWtJwE2FrjQU8IUQTMyIQGmmfmNQoOSPhT5ma4spFApFuFRdS++XspDojhGDxEeuhXrHnnyTktxPoaG3F2LX8PoWbSmFQqFIR8ylxkgqW+i49xh9uWe5uDLrGGK9YILMFlwPbxjox5G4XN4ME5AsNPQA7zEC7lyYlUqj76hCIt8pFAqFSu8SvlOI1CzQcWne6hmj+uFgMoBL+61j7I5l9nRzrn15o5w3UqV2hUKhyAgsukHyRUjPS3Im9ysYIAkxYlY4Czf04SLctYy9scwYdxEYKWrVdYVCoVAEQEi0r5BpPX8PjotSB8k+xANGzpkLXTxmqpoQB/gt+45auxNqHtm/ECGE+f+EuNWEFAqFQhEuYYN4l5LAhyCcp71GIxedWEfCxm8stDydx3rYM07pN1/n+UJodki9kveuNMQu1w4zvxUKhUKRD8EvNOtZMozotbIdFCj9w21xDlQvkgeiCGLxjmaQvlnYAfFpHHLHsRoT5hPH5fzLtCUUCoUif4KfJmkFybYz1rw0/2OIHYs47JLzRvtWyGF8eCyhd7LzJQDj6SjmUYHVnLQFFAqFokgA4cIIai22gRXrd9hR5+BGidCdkM6NCkfSCPi9WwQOH/hmnt+ebo7nIwg/kvHMQbB+e9FdhUKhUBSP4LvSb/1Ei6wn0re9HstrucuzmUVAHKl9Ntc/xWIU20D2ZoUbrG+JvBBCWGtcoVAoWhGYNSoEjEUlRjlS+zwYVxE1krrznVhZBaECGIi/kS6Qq6iSmWBdX871URdrDSsUCsXHS/KzhajPRTAv6OI9xwdwWb6hWCIsYq1MrMO5FYOALw+FQqFQfHwkDxJvpMTeRA+ZE7i/lAts9GbALywdV4tzYSzFV4DWoEKhULRx0Ejal+R+OuPKYG3QKQgAhoWWQxfqUCgUCoVCoVAoFAqFQqFQKBQKhSID/hfXLzSXoZG3lgAAAABJRU5ErkJggg==" alt="Neurowaves, Inc." />
+      <span>Dana Point, California &middot; Est. 1997</span>
+    </span>
+    <span>Redesign concept by Innovative Blockchain Solutions</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function themedColor(varName, fallback){
+    var v = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return v || fallback;
+  }
+
+  /* ---------------- Hero wave ---------------- */
+  var heroCanvas = document.getElementById('heroWave');
+  var heroCtx = heroCanvas.getContext('2d');
+  var heroSection = document.querySelector('.hero');
+
+  function sizeHero(){
+    var rect = heroSection.getBoundingClientRect();
+    heroCanvas.width = rect.width * devicePixelRatio;
+    heroCanvas.height = rect.height * devicePixelRatio;
+    heroCanvas.style.width = rect.width + 'px';
+    heroCanvas.style.height = rect.height + 'px';
+  }
+  sizeHero();
+  window.addEventListener('resize', sizeHero);
+
+  function drawHero(t){
+    var w = heroCanvas.width, h = heroCanvas.height;
+    heroCtx.clearRect(0,0,w,h);
+    var layers = [
+      {amp:0.045, freq:0.9, speed:0.00035, color:'rgba(143,214,196,0.5)', width:1.6, base:0.62},
+      {amp:0.03,  freq:1.6, speed:0.0005,  color:'rgba(143,214,196,0.3)', width:1.2, base:0.72},
+      {amp:0.02,  freq:2.6, speed:0.0007,  color:'rgba(240,162,114,0.35)', width:1.4, base:0.82}
+    ];
+    layers.forEach(function(layer){
+      heroCtx.beginPath();
+      for(var x=0;x<=w;x+=6){
+        var y = h*layer.base + Math.sin(x*0.01*layer.freq + t*layer.speed)*h*layer.amp;
+        if(x===0) heroCtx.moveTo(x,y); else heroCtx.lineTo(x,y);
+      }
+      heroCtx.strokeStyle = layer.color;
+      heroCtx.lineWidth = layer.width * devicePixelRatio;
+      heroCtx.stroke();
+    });
+  }
+
+  if(reduced){
+    drawHero(0);
+  } else {
+    requestAnimationFrame(function loop(t){
+      drawHero(t);
+      requestAnimationFrame(loop);
+    });
+  }
+
+  /* ---------------- Services directory ---------------- */
+  var services = [
+    {ch:'01', name:'Sensitivity Stress Syndrome Elimination', desc:'A gentle, non-invasive method that locates and clears blockages in electromagnetic pathways linked to allergens.', freq:1.2, amp:0.55},
+    {ch:'02', name:'CranioBiotic Technique', desc:'Energy medicine that works with the body’s own electromagnetic field to restore structural balance.', freq:2.1, amp:0.4},
+    {ch:'03', name:'Frequency Specific Microcurrent', desc:'Targeted micro-currents for chronic and acute pain, tendon and ligament injury, and fibromyalgia.', freq:3.4, amp:0.65},
+    {ch:'04', name:'Zyto Bio-Communication', desc:'Measures fluctuations in skin conductivity to help map what your body is responding to.', freq:4.6, amp:0.3},
+    {ch:'05', name:'Brain Gym® &amp; Academic Tutoring', desc:'Movement-based technique for focus and learning, for high achievers and strugglers alike.', freq:1.8, amp:0.45},
+    {ch:'06', name:'Genetic Testing', desc:'Reveal My DNA testing builds an individualized plan around your own genetic blueprint.', freq:2.8, amp:0.35},
+    {ch:'07', name:'Microbiome Testing', desc:'Your microflora is as unique as a fingerprint &mdash; your pre- and probiotics should be too.', freq:3.9, amp:0.5},
+    {ch:'08', name:'Whole Food Supplements', desc:'Sourced with practitioners we trust, matched to what your body actually needs.', freq:1.4, amp:0.3},
+    {ch:'09', name:'Young Living Essential Oils', desc:'Seed-to-seal sourcing, used and taught throughout the practice.', freq:5.2, amp:0.4},
+    {ch:'10', name:'Bach Flower Remedies', desc:'A simple, gentle homeopathic system of flower essences that supports the body.', freq:2.3, amp:0.55}
+  ];
+
+  var directory = document.getElementById('directory');
+  var miniCanvases = [];
+
+  services.forEach(function(s){
+    var row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML =
+      '<div class="ch">CH.&nbsp;' + s.ch + '</div>' +
+      '<h3>' + s.name + '</h3>' +
+      '<canvas></canvas>' +
+      '<div class="desc">' + s.desc + '</div>';
+    directory.appendChild(row);
+    var cv = row.querySelector('canvas');
+    miniCanvases.push({canvas:cv, freq:s.freq, amp:s.amp});
+  });
+
+  function sizeMinis(){
+    miniCanvases.forEach(function(m){
+      var rect = m.canvas.getBoundingClientRect();
+      m.canvas.width = Math.max(rect.width,1) * devicePixelRatio;
+      m.canvas.height = Math.max(rect.height,1) * devicePixelRatio;
+    });
+  }
+  sizeMinis();
+  window.addEventListener('resize', sizeMinis);
+
+  function drawMinis(t){
+    var kelp = themedColor('--kelp-bright', '#8FD6C4');
+    miniCanvases.forEach(function(m){
+      var ctx = m.canvas.getContext('2d');
+      var w = m.canvas.width, h = m.canvas.height;
+      if(w===0||h===0) return;
+      ctx.clearRect(0,0,w,h);
+      ctx.beginPath();
+      for(var x=0;x<=w;x+=4){
+        var y = h/2 + Math.sin(x*0.04*m.freq + t*0.0009)*h*0.35*m.amp;
+        if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = kelp;
+      ctx.lineWidth = 1.5*devicePixelRatio;
+      ctx.stroke();
+    });
+  }
+
+  if(reduced){
+    drawMinis(0);
+  } else {
+    requestAnimationFrame(function loop(t){
+      drawMinis(t);
+      requestAnimationFrame(loop);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

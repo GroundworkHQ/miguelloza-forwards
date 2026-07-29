@@ -144,23 +144,28 @@
      between them reads as an empty hole rather than intentional breathing room */
   #philosophy{padding-bottom:48px;}
   #services{padding-top:48px;}
-  .philosophy{
-    display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
-  }
   .philosophy .quote{
-    font-size:clamp(26px, 3vw, 36px);line-height:1.28;
+    font-size:clamp(32px, 4.6vw, 50px);line-height:1.2;
+    margin-top:16px;
+  }
+  .philosophy .body{
+    max-width:62ch;margin-top:40px;
   }
   .philosophy .body p{
     font-size:16.5px;line-height:1.75;color:var(--text-soft);
   }
   .philosophy .body p + p{margin-top:18px;}
-  @media (max-width:820px){
-    .philosophy{grid-template-columns:1fr;}
-  }
 
   /* ---------- SERVICES DIRECTORY ---------- */
-  .directory-head{max-width:60ch;margin-bottom:52px;}
+  .directory-head{
+    display:grid;grid-template-columns:0.85fr 1fr;gap:48px;align-items:end;
+    margin-bottom:52px;
+  }
   .directory-head h2{font-size:clamp(26px,3.4vw,38px);margin-top:14px;}
+  .directory-head p{font-size:16px;line-height:1.65;color:var(--text-soft);}
+  @media (max-width:820px){
+    .directory-head{grid-template-columns:1fr;}
+  }
   .directory{
     border-top:1px solid var(--line);
   }

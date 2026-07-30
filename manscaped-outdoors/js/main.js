@@ -187,8 +187,7 @@
      POSTs the qualification fields to a GHL workflow (Website Contact Form to
      Lead) that creates the contact, opens an opportunity in the Manscaped Sales
      pipeline, and emails the team. Keys must match the webhook's captured
-     sample. Files can't ride a JSON webhook, so we pass the selected filenames
-     along as a note for follow-up. */
+     sample. */
   var GHL_WEBHOOK_URL =
     "https://services.leadconnectorhq.com/hooks/2MVEWGtchrrU6VUrsT1u/webhook-trigger/bc9b3995-11eb-42e7-b28f-7695e7c6296a";
   var form = document.getElementById("estimateForm");
@@ -206,22 +205,12 @@
         return el ? el.value.trim() : "";
       }
 
-      // Selected file names (the JSON webhook can't carry the files themselves).
-      var mediaEl = form.elements["media"];
-      var fileNames = "";
-      if (mediaEl && mediaEl.files && mediaEl.files.length) {
-        var names = [];
-        for (var i = 0; i < mediaEl.files.length; i++) names.push(mediaEl.files[i].name);
-        fileNames = names.join(", ");
-      }
-
       var leadSource = [
         "Landing page: " + (fieldVal("landingPage") || "-"),
         "Referrer: " + (fieldVal("referrer") || "-"),
         "utm_source=" + (fieldVal("utmSource") || "-"),
         "utm_medium=" + (fieldVal("utmMedium") || "-"),
         "utm_campaign=" + (fieldVal("utmCampaign") || "-"),
-        "Photos/video selected: " + (fileNames || "none"),
       ].join(" | ");
 
       // Lower bound of the selected budget range, sent so GHL can set the

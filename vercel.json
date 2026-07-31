@@ -3,7 +3,11 @@
   "rewrites": [
     {
       "source": "/inner-edge",
-      "destination": "https://groundworkhq.github.io/inner-edge/"
+      "destination": "https://groundworkhq.github.io/inner-edge/index.html"
+    },
+    {
+      "source": "/inner-edge/",
+      "destination": "https://groundworkhq.github.io/inner-edge/index.html"
     },
     {
       "source": "/inner-edge/:path*",

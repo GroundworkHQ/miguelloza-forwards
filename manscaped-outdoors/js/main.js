@@ -183,6 +183,44 @@
     setHidden("utmCampaign", params.get("utm_campaign"));
   })();
 
+  /* ---------- Success modal ----------
+     Shown after the contact form posts successfully. Mirrors the lightbox
+     pattern: is-open class, body scroll lock, focus restored on close. */
+  var successModal = document.getElementById("successModal");
+  var modalLastFocused = null;
+
+  function openSuccessModal() {
+    if (!successModal) return;
+    modalLastFocused = document.activeElement;
+    successModal.classList.add("is-open");
+    successModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    var closeBtn = successModal.querySelector(".modal__close");
+    if (closeBtn && closeBtn.focus) closeBtn.focus();
+  }
+
+  function closeSuccessModal() {
+    if (!successModal) return;
+    successModal.classList.remove("is-open");
+    successModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (modalLastFocused && modalLastFocused.focus) modalLastFocused.focus();
+  }
+
+  if (successModal) {
+    successModal.addEventListener("click", function (e) {
+      /* backdrop click, or either close control */
+      if (e.target === successModal || e.target.closest("[data-modal-dismiss], .modal__close")) {
+        closeSuccessModal();
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && successModal.classList.contains("is-open")) {
+        closeSuccessModal();
+      }
+    });
+  }
+
   /* ---------- Contact form -> GoHighLevel inbound webhook ----------
      POSTs the qualification fields to a GHL workflow (Website Contact Form to
      Lead) that creates the contact, opens an opportunity in the Manscaped Sales
@@ -256,11 +294,10 @@
           if (!res.ok) throw new Error("Bad response " + res.status);
           form.reset();
           if (note) {
-            note.textContent =
-              "Thanks for reaching out. Your request came through and we'll follow up " +
-              "with the best next step. For anything urgent, call (706) 903-9564.";
-            note.className = "form-note is-success";
+            note.textContent = "";
+            note.className = "form-note";
           }
+          openSuccessModal();
         })
         .catch(function () {
           if (note) {

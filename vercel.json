@@ -1,3 +1,13 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/inner-edge",
+      "destination": "https://groundworkhq.github.io/inner-edge/"
+    },
+    {
+      "source": "/inner-edge/:path*",
+      "destination": "https://groundworkhq.github.io/inner-edge/:path*"
+    }
+  ]
 }

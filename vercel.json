@@ -34,6 +34,10 @@
       "destination": "https://groundworkhq.github.io/neurowaves/index.html"
     },
     {
+      "source": "/neurowaves/:path*/",
+      "destination": "https://groundworkhq.github.io/neurowaves/:path*/index.html"
+    },
+    {
       "source": "/neurowaves/:path*",
       "destination": "https://groundworkhq.github.io/neurowaves/:path*"
     }

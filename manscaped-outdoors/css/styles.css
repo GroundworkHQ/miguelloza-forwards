@@ -1072,6 +1072,55 @@ select:focus-visible, textarea:focus-visible {
   color: var(--bark);
 }
 .testimonial__loc { color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Trust badges (Google rating + BBB) ----------
+   Both are links out to the real third-party profiles — that verifiability is
+   the whole point, and it is what a paid review widget would otherwise buy. */
+.trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-sm);
+  background: rgba(240, 233, 218, 0.08);
+  border: 1px solid rgba(240, 233, 218, 0.18);
+  color: var(--cream);
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.trust-badge:hover {
+  background: rgba(240, 233, 218, 0.14);
+  border-color: rgba(240, 233, 218, 0.34);
+  transform: translateY(-2px);
+}
+.trust-badge__score {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--ember-2);
+}
+.trust-badge__body { display: grid; gap: 0.15rem; text-align: left; }
+.trust-badge__stars { color: var(--ember); letter-spacing: 2px; font-size: 0.85rem; line-height: 1; }
+.trust-badge__label { color: var(--cream-dim); font-size: 0.88rem; line-height: 1.3; }
+.trust-badge__label--strong {
+  color: var(--cream);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.82rem;
+}
+@media (max-width: 440px) {
+  .trust-strip { flex-direction: column; }
+  .trust-badge { justify-content: center; }
+}
+
 @media (max-width: 860px) {
   .testimonials__grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
 }

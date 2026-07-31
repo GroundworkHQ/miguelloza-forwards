@@ -24,6 +24,18 @@
     {
       "source": "/manscaped-outdoors/:path*",
       "destination": "https://groundworkhq.github.io/manscaped-outdoors/:path*"
+    },
+    {
+      "source": "/neurowaves",
+      "destination": "https://groundworkhq.github.io/neurowaves/index.html"
+    },
+    {
+      "source": "/neurowaves/",
+      "destination": "https://groundworkhq.github.io/neurowaves/index.html"
+    },
+    {
+      "source": "/neurowaves/:path*",
+      "destination": "https://groundworkhq.github.io/neurowaves/:path*"
     }
   ]
 }

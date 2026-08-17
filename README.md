@@ -77,9 +77,12 @@ All on the proxy flow as of 2026-07-30. No client site lives in this repo.
 
 | URL | Source repo | Notes |
 |---|---|---|
-| miguelloza.com/inner-edge/ | `GroundworkHQ/inner-edge` | |
 | miguelloza.com/manscaped-outdoors/ | `GroundworkHQ/manscaped-outdoors` | Migrated off the old copy-in flow 2026-07-30 |
 | miguelloza.com/neurowaves/ | `GroundworkHQ/neurowaves` | Carries `<base href>` + absolute `/neurowaves/...` links, see gotcha 4 |
+
+**Retired: `miguelloza.com/inner-edge/`**, removed 2026-08-17. That site went live on its own domain, `inneredgescalping.com`, so the proxy was serving a second public copy of a client site — duplicate content on a domain unrelated to their brand. The rewrite rules were deleted rather than turned into a redirect, so **the path now 404s** for anyone still holding the old link. If that turns out to matter, a redirect to `https://inneredgescalping.com/` is a smaller change than restoring the proxy.
+
+**This is the general rule:** when a site moves to its real domain, retire its entry here. Two public copies is the failure mode to avoid.
 
 ## If the whole apex goes down at once
 

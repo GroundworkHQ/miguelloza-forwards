@@ -2,18 +2,6 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/inner-edge",
-      "destination": "https://groundworkhq.github.io/inner-edge/index.html"
-    },
-    {
-      "source": "/inner-edge/",
-      "destination": "https://groundworkhq.github.io/inner-edge/index.html"
-    },
-    {
-      "source": "/inner-edge/:path*",
-      "destination": "https://groundworkhq.github.io/inner-edge/:path*"
-    },
-    {
       "source": "/manscaped-outdoors",
       "destination": "https://groundworkhq.github.io/manscaped-outdoors/index.html"
     },

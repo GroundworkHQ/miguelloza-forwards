@@ -80,9 +80,11 @@ All on the proxy flow as of 2026-07-30. No client site lives in this repo.
 | miguelloza.com/manscaped-outdoors/ | `GroundworkHQ/manscaped-outdoors` | Migrated off the old copy-in flow 2026-07-30 |
 | miguelloza.com/neurowaves/ | `GroundworkHQ/neurowaves` | Carries `<base href>` + absolute `/neurowaves/...` links, see gotcha 4 |
 
-**Retired: `miguelloza.com/inner-edge/`**, removed 2026-08-17. That site went live on its own domain, `inneredgescalping.com`, so the proxy was serving a second public copy of a client site — duplicate content on a domain unrelated to their brand. The rewrite rules were deleted rather than turned into a redirect, so **the path now 404s** for anyone still holding the old link. If that turns out to matter, a redirect to `https://inneredgescalping.com/` is a smaller change than restoring the proxy.
+**Retired: `miguelloza.com/inner-edge/`**, 2026-08-17. That site went live on its own domain, `inneredgescalping.com`, so the proxy was serving a second public copy of a client site — duplicate content on a domain unrelated to their brand. The three rewrites were replaced with **307 redirects to the real domain**, including a `:path*` rule so deep links carry over.
 
-**This is the general rule:** when a site moves to its real domain, retire its entry here. Two public copies is the failure mode to avoid.
+⚠️ **Deliberately `"permanent": false`.** A 308 would be cached hard by every browser that hit it, which permanently surrenders `/inner-edge` on this domain — you could never reuse the path or call those visitors back. A 307 kills the duplicate content just as well and stays reversible. **Retiring a slug is exactly the case where a temporary redirect is right**, because the destination is someone else's domain and the arrangement may not be forever.
+
+**This is the general rule when a site reaches its own domain:** replace its rewrites here with 307s to the real domain. Do not just delete them — an old preview link then 404s in a client's inbox and you never find out. Do not make them permanent either.
 
 ## If the whole apex goes down at once
 

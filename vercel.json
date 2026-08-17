@@ -1,5 +1,22 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/inner-edge",
+      "destination": "https://inneredgescalping.com/",
+      "permanent": false
+    },
+    {
+      "source": "/inner-edge/",
+      "destination": "https://inneredgescalping.com/",
+      "permanent": false
+    },
+    {
+      "source": "/inner-edge/:path*",
+      "destination": "https://inneredgescalping.com/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/manscaped-outdoors",

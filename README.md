@@ -28,22 +28,24 @@ One-time setup per site:
 
 ## Preview subdomains — `<slug>.miguelloza.com`
 
-**Status: convention agreed 2026-08-17, nothing set up yet.** `inner-edge` is intended to be the first, once its Vercel project exists (see that repo's REFERENCE §9).
+**Run `/preview <project>` in Claude Code.** It carries the whole flow and the gotchas. This section is the reference behind it.
 
-The proxy flow above can only ever show `main`, because Pages builds one branch. This is the second publishing mode, for **work that is not ready**: a stable public URL per project that tracks an unfinished branch.
+**Proven on `inner-edge` 2026-08-17.** Live at `inner-edge.miguelloza.com`, serving the `preview` branch.
 
-**The rule is the same for every project, so there is nothing to remember per site:**
+The path proxy above can only ever show `main`, because Pages builds one branch. This is the second publishing mode, for **work that is not ready**: a stable client-facing URL per project that tracks an unfinished branch.
 
 > Push to **`preview`** → live at **`<slug>.miguelloza.com`**.
 
 `main` still means production. `preview` means "show someone, do not ship."
 
-### One-time setup per project
+**Why not just send the raw Vercel URL.** `<project>-git-<branch>-groundworkhq-projects.vercel.app` usually works and needs no setup at all. The reason to do this anyway is presentation: a branded URL reads as infrastructure you own rather than a git preview, and it does not leak the team slug or the branch name. For work a client is paying for, that is the point. An earlier version of this section justified the subdomain on previews being login-gated — that was generalised from `rekindle` and is **wrong**, see below.
 
-1. **Cloudflare:** `CNAME <slug>` → the value Vercel shows when you add the domain. ⚠️ **DNS-only, grey cloud.** Same rule as the apex records above — proxying Cloudflare in front of Vercel breaks certificate issuance.
-2. **Vercel:** add `<slug>.miguelloza.com` to that project with **`gitBranch: "preview"`**. It is a first-class field on `POST /v10/projects/{id}/domains`, not a workaround, and it is patchable later, so the subdomain can be re-pointed at a different branch without touching DNS.
-3. **Add the `noindex` header** to that project's `vercel.json`, scoped to the preview host so production is unaffected:
+### Per-project checklist
 
+1. **Project must be on Vercel.** `rekindle`, `gateway-city-church`, `frontdesk-ai`, `inner-edge` qualify. `manscaped-outdoors` and `neurowaves` are Pages-only and would need migrating first, which is real work.
+2. **Check deployment protection** — see the warning below. Turn Vercel Authentication off, or the link demands a login.
+3. **Create the `preview` branch** if it does not exist, from `main`, then merge the work-in-progress branch in.
+4. **Add the `noindex` header** to that project's `vercel.json`, on `main`:
 ```json
 "headers": [
   {
@@ -53,14 +55,36 @@ The proxy flow above can only ever show `main`, because Pages builds one branch.
   }
 ]
 ```
+5. **Attach:** `vercel domains add <slug>.miguelloza.com <project> --scope groundworkhq-projects`
+6. **Bind to the branch.** No CLI flag for this; PATCH `/v9/projects/<id>/domains/<domain>` with `{"gitBranch":"preview"}`. It is patchable later, so a subdomain can be re-pointed at a different branch **without touching DNS**.
+7. **DNS: nothing to do**, the wildcard covers it. See below.
+8. **Verify:** 200 on the subdomain (~3 min for the certificate), preview-only content present there and absent from production, and `x-robots-tag` on the preview but not production.
 
-⚠️ **Step 3 is not optional.** A public preview gets crawled, and then unapproved client work competes in search results with the client's own domain. Retrofitting this after something is indexed is much worse than doing it up front.
+### DNS: one wildcard, then never again
 
-### Limits, before relying on it
+```
+CNAME   *   ->   cname.vercel-dns.com      DNS only (grey cloud)
+```
 
-- **Vercel-hosted projects only.** `rekindle`, `gateway-city-church`, `frontdesk-ai` qualify today; `inner-edge` will once it moves. **`manscaped-outdoors` and `neurowaves` are GitHub Pages only** and would need migrating to Vercel first — until then they stay on the path proxy above. The two modes coexist fine.
-- **Public means public.** This is the point (Vercel's own `*.vercel.app` previews are login-gated by default, which is why they are useless for showing a client anything), but it means anyone with the link sees unreleased work. The source repos are public anyway, so this is not a new exposure, but a URL is far more discoverable than a repo.
-- **Not a substitute for the client's own domain.** Once a site is live on its real domain, retire its preview subdomain rather than leaving two public copies. Same duplicate-content reasoning as `noindex`.
+One record in Cloudflare covers every current and future slug, so per-project DNS work drops to zero.
+
+**Why this works without a wildcard on the Vercel side:** Vercel routes by `Host` header. The DNS wildcard only makes the hostname *resolve*; which project answers is decided by whichever project has claimed that exact hostname. A slug nobody has claimed just lands on Vercel's own 404, which is harmless. So there is no conflict between a DNS wildcard and per-project domains.
+
+⚠️ **Grey cloud only.** Proxying Cloudflare in front of Vercel breaks certificate issuance. Cloudflare's free plan only supports wildcards DNS-only anyway, so this lines up.
+
+⚠️ **Never switch miguelloza.com's nameservers to Vercel.** Vercel suggests it every time you add a domain. **Cloudflare Email Routing handles mail for this domain** (`route1/2/3.mx.cloudflare.net` plus an SPF include). Moving nameservers kills Miguel's email. Namecheap is only the registrar.
+
+### Gotchas that cost time
+
+⚠️ **Deployment protection varies per project, so check, do not assume.** `rekindle` has Vercel Authentication on (`all_except_custom_domains`) and its previews cannot be shared. `inner-edge`, created later, has it **off**. New projects default to off. `gateway-city-church` and `frontdesk-ai` are unverified.
+
+⚠️ **Public means public.** Anyone with the link sees unreleased client work. The source repos are public anyway, so it is not new exposure, but a URL is far more discoverable than a repo. That is what step 4 is for.
+
+⚠️ **The `noindex` step is not optional.** Retrofitting it after something is indexed is much worse than doing it up front.
+
+### Retiring one
+
+When the site goes live on its real domain, remove the subdomain and replace any `miguelloza.com/<slug>/` rewrite with a **307** to the real domain. Not a deletion, and not a 308 — see "Live sites" below for why.
 
 ## Gotchas
 
@@ -75,10 +99,11 @@ Each of these cost a debug cycle.
 
 All on the proxy flow as of 2026-07-30. No client site lives in this repo.
 
-| URL | Source repo | Notes |
-|---|---|---|
-| miguelloza.com/manscaped-outdoors/ | `GroundworkHQ/manscaped-outdoors` | Migrated off the old copy-in flow 2026-07-30 |
-| miguelloza.com/neurowaves/ | `GroundworkHQ/neurowaves` | Carries `<base href>` + absolute `/neurowaves/...` links, see gotcha 4 |
+| URL | Source repo | Mode | Notes |
+|---|---|---|---|
+| miguelloza.com/manscaped-outdoors/ | `GroundworkHQ/manscaped-outdoors` | path proxy | Migrated off the old copy-in flow 2026-07-30 |
+| miguelloza.com/neurowaves/ | `GroundworkHQ/neurowaves` | path proxy | Carries `<base href>` + absolute `/neurowaves/...` links, see gotcha 4 |
+| inner-edge.miguelloza.com | `GroundworkHQ/inner-edge` | **subdomain**, `preview` branch | Live 2026-08-17. Production is `inneredgescalping.com`; this shows unreleased work only |
 
 **Retired: `miguelloza.com/inner-edge/`**, 2026-08-17. That site went live on its own domain, `inneredgescalping.com`, so the proxy was serving a second public copy of a client site — duplicate content on a domain unrelated to their brand. The three rewrites were replaced with **307 redirects to the real domain**, including a `:path*` rule so deep links carry over.
 

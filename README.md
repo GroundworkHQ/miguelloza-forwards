@@ -57,7 +57,7 @@ The path proxy above can only ever show `main`, because Pages builds one branch.
 ```
 5. **Attach:** `vercel domains add <slug>.miguelloza.com <project> --scope groundworkhq-projects`
 6. **Bind to the branch.** No CLI flag for this; PATCH `/v9/projects/<id>/domains/<domain>` with `{"gitBranch":"preview"}`. It is patchable later, so a subdomain can be re-pointed at a different branch **without touching DNS**.
-7. **DNS: nothing to do**, the wildcard covers it. See below.
+7. **DNS: nothing to do**, the wildcard covers it — verified, see below. Add an explicit record only once the URL has gone to a client.
 8. **Verify:** 200 on the subdomain (~3 min for the certificate), preview-only content present there and absent from production, and `x-robots-tag` on the preview but not production.
 
 ### DNS: one wildcard, then never again
@@ -66,9 +66,21 @@ The path proxy above can only ever show `main`, because Pages builds one branch.
 CNAME   *   ->   cname.vercel-dns.com      DNS only (grey cloud)
 ```
 
-One record in Cloudflare covers every current and future slug, so per-project DNS work drops to zero.
+In place since 2026-08-17. One record in Cloudflare covers every current and future slug, so **per-project DNS work is zero** — `/preview` on a new project needs no record at all.
 
-**Why this works without a wildcard on the Vercel side:** Vercel routes by `Host` header. The DNS wildcard only makes the hostname *resolve*; which project answers is decided by whichever project has claimed that exact hostname. A slug nobody has claimed just lands on Vercel's own 404, which is harmless. So there is no conflict between a DNS wildcard and per-project domains.
+**Tested end to end, not just reasoned.** A throwaway subdomain with no record of its own was claimed on the `inner-edge` project: it got a certificate in about **ten seconds** and served the correct site. Removing it returned it to a plain 404. Specifically confirmed:
+
+| | |
+|---|---|
+| Wildcard resolves a name with no explicit record | yes |
+| Vercel issues a cert for a wildcard-only name | yes, ~10s |
+| It routes to whichever project claimed it | yes |
+| A name **no** project has claimed | 404, no cert, harmless |
+| Explicit record + wildcard together | no conflict |
+
+**Why there is no conflict:** Vercel routes by `Host` header. The DNS wildcard only makes a hostname *resolve*; which project answers is decided by whichever project has claimed that exact hostname. In Cloudflare, a specific record beats the wildcard.
+
+**Pin the client-facing ones, let the wildcard cover the rest.** Add an explicit record for any subdomain you have actually sent to a client; leave everything else to the wildcard. The wildcard is a single point of failure — delete it, mistype it, or flip it to orange cloud and every subdomain dies at once. An explicit record insulates the URL that is sitting in someone's inbox from a mistake on the catch-all. `inner-edge` is pinned for this reason. For a slug you are only looking at yourself, do not bother.
 
 ⚠️ **Grey cloud only.** Proxying Cloudflare in front of Vercel breaks certificate issuance. Cloudflare's free plan only supports wildcards DNS-only anyway, so this lines up.
 

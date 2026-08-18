@@ -86,6 +86,31 @@ In place since 2026-08-17. One record in Cloudflare covers every current and fut
 
 ⚠️ **Never switch miguelloza.com's nameservers to Vercel.** Vercel suggests it every time you add a domain. **Cloudflare Email Routing handles mail for this domain** (`route1/2/3.mx.cloudflare.net` plus an SPF include). Moving nameservers kills Miguel's email. Namecheap is only the registrar.
 
+### DNS tooling: `cf-dns.sh`
+
+DNS for this domain lives in **Cloudflare** (Namecheap is only the registrar). There is no Cloudflare MCP, so DNS is scripted rather than clicked:
+
+```
+~/.claude/scripts/cf-dns.sh whoami            # verify token + zone access
+~/.claude/scripts/cf-dns.sh list [filter]     # list records
+~/.claude/scripts/cf-dns.sh add CNAME foo cname.vercel-dns.com
+~/.claude/scripts/cf-dns.sh del foo.miguelloza.com
+```
+
+Defaults to `miguelloza.com` (override with `CF_ZONE=`), creates records **grey cloud**, TTL auto.
+
+**The token is deliberately narrow.** A Cloudflare user API token with **`Zone:DNS:Edit` on `miguelloza.com` only** — not "All zones". Verified 2026-08-18: pointed at `inneredgescalping.com` it fails with exit code 2. That matters, because the client zone holds the Resend DKIM and the SES bounce MX behind their Gmail send-as, and a scoped token physically cannot reach them.
+
+⚠️ **The token lives in the macOS Keychain, never in a file or an env var.** `.zshrc` was deliberately cleaned of keys and should stay that way. Re-add or rotate with:
+```
+security add-generic-password -a "$USER" -s cloudflare-dns-miguelloza -w
+```
+It prompts silently, so the value never enters shell history. The script reads it fresh on every run.
+
+**The account-wide Cloudflare MCP was considered and rejected.** It wraps 2,500-plus endpoints behind `search()`/`execute()` across every zone on the account, including client domains. The scoped token does the one job actually needed here with a blast radius of one zone.
+
+**Note it is rarely needed.** The wildcard means `/preview` requires no DNS work. This is for pinning client-facing records, cleanup, and reading DNS to diagnose things without screenshots.
+
 ### Tried and rejected: a project-level wildcard domain
 
 **Do not retry this.** Tested 2026-08-17, does not work, removed the same day.

@@ -86,6 +86,20 @@ In place since 2026-08-17. One record in Cloudflare covers every current and fut
 
 ⚠️ **Never switch miguelloza.com's nameservers to Vercel.** Vercel suggests it every time you add a domain. **Cloudflare Email Routing handles mail for this domain** (`route1/2/3.mx.cloudflare.net` plus an SPF include). Moving nameservers kills Miguel's email. Namecheap is only the registrar.
 
+### Tried and rejected: a project-level wildcard domain
+
+**Do not retry this.** Tested 2026-08-17, does not work, removed the same day.
+
+**The idea was** to attach `*.miguelloza.com` to the `miguelloza-forwards` project and use host-based rewrites (`has: [{type:"host"}]`) so a **GitHub Pages** project could get a branded `<slug>.miguelloza.com` without migrating to Vercel.
+
+**What was confirmed good:** with the project wildcard attached, `inner-edge.miguelloza.com` kept serving its own project correctly throughout. A specific project domain is **not** disturbed by another project claiming a wildcard, so the precedence risk is real but resolved in the sensible direction.
+
+**Why it fails anyway:** the wildcard domain never becomes functional. Vercel reports it "not configured properly" and demands either an `A *.miguelloza.com 76.76.21.21` record or its own nameservers. **Neither is available here.** The DNS wildcard is a `CNAME` to `cname.vercel-dns.com`, which resolves across rotating `76.76.21.x` and `66.33.60.x` addresses and does not satisfy that check, and the nameserver route is permanently off the table because Cloudflare Email Routing handles mail for this domain. No certificate is issued, so unclaimed subdomains serve nothing.
+
+⚠️ **Note the distinction, because it is easy to conflate.** A **DNS** wildcard (`CNAME *`, in Cloudflare) works and is what the `/preview` flow relies on — proven. A **project-level wildcard domain** (`*.miguelloza.com` attached to a Vercel project) is a different mechanism and is the one that fails. The first working says nothing about the second.
+
+**And even if the certificate problem were solved, it would not buy what you want.** GitHub Pages builds one branch, so a Pages site can only ever show `main`. A branded subdomain in front of it is cosmetic over what `miguelloza.com/<slug>/` already does, and still cannot show a client unfinished work. **For real previews on `manscaped-outdoors` or `neurowaves`, migrating them to Vercel is the only honest path.**
+
 ### Gotchas that cost time
 
 ⚠️ **Deployment protection varies per project, so check, do not assume.** `rekindle` has Vercel Authentication on (`all_except_custom_domains`) and its previews cannot be shared. `inner-edge`, created later, has it **off**. New projects default to off. `gateway-city-church` and `frontdesk-ai` are unverified.
